@@ -49,6 +49,42 @@ void cerrar ()
 /* FunciÃ³n : Main
  * Objetivo: Presentar en pantalla (registro a registro) archivo Clients.
 */
+
+/*
+#Registro de Personal
+*/
+
+void employeeRecord (){
+    string employee;
+    string group;
+    string company;
+    string plant;
+    string department;
+    char cveOE;
+    string name;
+    double baseSalary;
+    int hireDate;
+}
+
+/*
+#Registro de Movimientos de Personal
+*/
+
+void regsitroMovimientosPersonal(){
+    char cveMovement;
+    string employee;
+    string group;
+    string company;
+    string plant;
+    string department;
+    char cveOE;
+    string name;
+    double baseSalary;
+    int hireDate;
+}
+
+
+
 int main () 
 {
     abrir ();
