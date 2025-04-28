@@ -22,7 +22,24 @@ ifstream movements("movements.csv");
 ifstream personnel("personnel.csv");
 ifstream newPersonnel("newpersonnel.csv");
 
-
+//VERIFICAR ARCHIVOS
+void openFiles(){
+    if (!movements) 
+    {
+        cerr << "Movements file is not available" << endl;
+        exit (EXIT_FAILURE);
+    }
+    if (!personnel) 
+    {
+        cerr << "Personnel file is not available" << endl;
+        exit (EXIT_FAILURE);
+    }
+    if (!newPersonnel) 
+    {
+        cerr << "New Personnel file us not available" << endl;
+        exit (EXIT_FAILURE);
+    }
+}
 //LEER ARCHIVOS
 void movimientosTrabajador(){
 }
@@ -41,5 +58,7 @@ void changeEmployee(){
 
 
 int main(){
+    openFiles();
     
+    return 0;
 }
