@@ -41,6 +41,7 @@ void openFiles(){
     }
 }
 
+
 //LEER ARCHIVOS
 void movimientosTrabajador(){
 }
@@ -57,9 +58,17 @@ void deleteEmployee(){
 void changeEmployee(){
 }
 
+//CERRAR ARCVHIVOS
+void closeFiles(){
+    movements.close();
+    personnel.close();
+    newPersonnel.close();
+}
+
 
 int main(){
     openFiles();
     
+    closeFiles();
     return 0;
 }
