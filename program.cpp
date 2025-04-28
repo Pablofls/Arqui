@@ -15,3 +15,31 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
+using namespace std;
+
+//DECLARACION DE ARCHIVOS
+ifstream movements("movements.csv");
+ifstream personnel("personnel.csv");
+ifstream newPersonnel("newpersonnel.csv");
+
+
+//LEER ARCHIVOS
+void movimientosTrabajador(){
+}
+
+//ALTA DE UN TRABAJADOT
+void registerEmployee(){
+}
+
+//BAJA DE UN TRABAJADOR
+void deleteEmployee(){
+}
+
+//CAMBIO DE UN TRABAJADOR
+void changeEmployee(){
+}
+
+
+int main(){
+    
+}
