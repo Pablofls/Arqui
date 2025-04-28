@@ -40,6 +40,7 @@ void openFiles(){
         exit (EXIT_FAILURE);
     }
 }
+
 //LEER ARCHIVOS
 void movimientosTrabajador(){
 }
