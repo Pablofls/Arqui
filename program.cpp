@@ -41,12 +41,42 @@ void openFiles(){
     }
 }
 
-
-//LEER ARCHIVOS
-void movimientosTrabajador(){
+/***************** READ ARCHIVES *******************/
+//Read Personnel Movement Archive
+void archPersonnelMovements(){
 }
 
-//ALTA DE UN TRABAJADOT
+//Read personal archive
+void archPersonnel(){}
+
+/***************** ABORT *******************/
+
+//Aborts porgram (ETHAN)
+void abort(){
+
+}
+
+/***************** FINAL REPORT *******************/
+
+//Write Report
+void writeReport(){
+    //Impresion de como se veria el reporte
+}
+
+/***************** CONTROL PROGRAM *******************/
+
+void controlProgram(){
+    //Modulo de control (ETHAN)
+}
+
+
+/***************** PERSONNEL MOVEMENTS *******************/
+
+void personnelMovements(){
+    //Modulo de movimientos (ETHAN)
+}
+
+//ALTA DE UN TRABAJADOR
 void registerEmployee(){
 }
 
@@ -58,12 +88,26 @@ void deleteEmployee(){
 void changeEmployee(){
 }
 
+//Copia
+void personnelCopy(){
+    //Modulo de copia
+}
+
+
+
+/***************** CLOSE ARCHIVES *******************/
+
+
 //CERRAR ARCVHIVOS
 void closeFiles(){
     movements.close();
     personnel.close();
     newPersonnel.close();
 }
+
+
+/***************** MAIN PROGRAM *******************/
+
 
 
 int main(){
