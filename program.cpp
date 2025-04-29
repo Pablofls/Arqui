@@ -145,17 +145,18 @@ void personnelMovements(){
         {
         //Invalid Register
         case 'A':
-            //Call COPY
+            //Mark Invalid Register on Report
             break;
         
-        //Invalid Dismiss
+        //Invalid Delete
         case 'B':
-            //Call Dismiss (Baja)
+            //Mark invalid Delete on Report
             break;
         
         //Valid Change
         case 'C':
             //Call Change
+            changeEmployee();
             break;
         
         default:
@@ -172,16 +173,17 @@ void personnelMovements(){
         //Valid Register
         case 'A':
             //Call COPY
+            personnelCopy();
             break;
         
-        //Invalid Dismiss
+        //Invalid Delete
         case 'B':
-            //Call Dismiss (Baja)
+            //Mark Invalid Delete on Report
             break;
         
         //Invalid Change
         case 'C':
-            //Call Change
+            //Mark Invalid Change on Report
             break;
         
         default:
@@ -193,6 +195,7 @@ void personnelMovements(){
 
     } else {
         //Call COPY
+        personnelCopy();
         readPersonnel();
     }
 }
