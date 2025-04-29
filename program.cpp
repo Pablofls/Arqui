@@ -246,6 +246,7 @@ void registerEmployee(){
 Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
+    
 }
 
 //CAMBIO DE UN TRABAJADOR
