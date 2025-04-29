@@ -51,6 +51,12 @@ void archPersonnel(){}
 
 /***************** ABORT *******************/
 
+
+/*
+La acción de abortar por archivos desordenados, se debe
+realizar en el módulo que lee y sugiero que se detecte al 
+momento de que el trabajador leído sea menor al anterior.
+*/
 //Aborts porgram (ETHAN)
 void abort(){
 
@@ -77,10 +83,16 @@ void personnelMovements(){
 }
 
 //ALTA DE UN TRABAJADOR
+/*
+No es necesario en Alta validar si el trabajador existe. 
+*/
 void registerEmployee(){
 }
 
 //BAJA DE UN TRABAJADOR
+/*
+Baja no se realiza ninguna acción
+*/
 void deleteEmployee(){
 }
 
@@ -89,6 +101,14 @@ void changeEmployee(){
 }
 
 //Copia
+
+
+/*
+Mejorar el diseño en módulos Copia, Alta, Baja y Cambio. Por 
+ejemplo para Alta bastaría indicando solamente: "Generar registro en 
+NP con la información de Mov y valores defaults"
+*/
+
 void personnelCopy(){
     //Modulo de copia
 }
