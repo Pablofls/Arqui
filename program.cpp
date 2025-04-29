@@ -135,7 +135,6 @@ void personnelMovements(){
         //Invalid Register
         case 'A':
             //Call COPY
-            personnelCopy();
             break;
         
         //Invalid Dismiss
@@ -162,7 +161,6 @@ void personnelMovements(){
         //Valid Register
         case 'A':
             //Call COPY
-            personnelCopy();
             break;
         
         //Invalid Dismiss
