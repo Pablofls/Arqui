@@ -20,7 +20,7 @@ using namespace std;
 //DECLARACION DE ARCHIVOS
 ifstream movements("movements.txt");
 ifstream personnel("personnel.csv");
-ifstream newPersonnel("newpersonnel.csv");
+ofstream newPersonnel("newpersonnel.csv");
 
 //VERIFICAR ARCHIVOS
 void openFiles(){
@@ -119,6 +119,7 @@ void personnelMovements(){
         //Invalid Register
         case 'A':
             //Call COPY
+            personnelCopy();
             break;
         
         //Invalid Dismiss
@@ -145,6 +146,7 @@ void personnelMovements(){
         //Valid Register
         case 'A':
             //Call COPY
+            personnelCopy();
             break;
         
         //Invalid Dismiss
@@ -198,7 +200,15 @@ NP con la información de Mov y valores defaults"
 */
 
 void personnelCopy(){
-    //Modulo de copia
+    newPersonnel << workerPersonnel << ", " 
+    << groupPersonnel << ", "
+    << companyPersonnel << ", "
+    << plantPersonnel << ", "
+    << departmentPersonnel << ", "
+    << cvePersonnel << ", "
+    << namePersonnel << ", "
+    << baseSalaryPersonnel << ", "
+    << hireDatePersonnel;
 }
 
 
