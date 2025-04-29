@@ -18,7 +18,7 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-ifstream movements("movements.csv");
+ifstream movements("movements.txt");
 ifstream personnel("personnel.csv");
 ifstream newPersonnel("newpersonnel.csv");
 
@@ -68,7 +68,9 @@ string hireDatePersonnel;
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
-    movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements;
+    while ( movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements){
+        cout << moveTypeMovements << " " << workerMovements << " " << groupMovements << " "  << companyMovements << " "  << plantMovements << " "  << departmentMovements << " "  << cveMovements << " "  << nameMovements << " " << baseSalaryMovements << " " << hireDateMovements << endl;
+    }
 
 }
 
@@ -88,6 +90,7 @@ momento de que el trabajador leído sea menor al anterior.
 */
 //Aborts porgram (ETHAN)
 void abort(){
+    
 
 }
 
@@ -165,8 +168,6 @@ void personnelMovements(){
         //Call COPY
         readPersonnel();
     }
-
-    //Modulo de movimientos (ETHAN)
 }
 
 //ALTA DE UN TRABAJADOR
@@ -219,6 +220,7 @@ void closeFiles(){
 
 int main(){
     openFiles();
+    readMovement();
     
     closeFiles();
     return 0;
