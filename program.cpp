@@ -22,6 +22,8 @@ ifstream movements("movements.txt");
 ifstream personnel("personnel.csv");
 ofstream newPersonnel("newpersonnel.csv");
 
+
+
 //VERIFICAR ARCHIVOS
 void openFiles(){
     if (!movements) 
@@ -64,7 +66,19 @@ string namePersonnel;
 int baseSalaryPersonnel;
 string hireDatePersonnel;
 
+//Variables for New Personnel Archive
+string workerNewPersonnel;
+string groupNewPersonnel;
+string companyNewPersonnel;
+string plantNewPersonnel;
+string departmentNewPersonnel;
+string cveNewPersonnel;
+string nameNewPersonnel;
+int baseSalaryNewPersonnel;
+string hireDateNewPersonnel;
 
+bool existe=false;
+string systemDate="4/29/2025";
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
@@ -76,7 +90,9 @@ void readMovement(){
 
 //Read personal archive
 void readPersonnel(){
-    personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel;
+    while (personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel) {
+        cout << workerPersonnel << " " << groupPersonnel << " " << companyPersonnel << " " << plantPersonnel << " " << departmentPersonnel << " " << cvePersonnel << " " << namePersonnel << " " << baseSalaryPersonnel << " " << hireDatePersonnel << endl;
+    }
 
 }
 
@@ -177,6 +193,52 @@ void personnelMovements(){
 No es necesario en Alta validar si el trabajador existe. 
 */
 void registerEmployee(){
+    if(existe){
+        cout<<"ALTA INVALIDA"<<endl;
+        personnelCopy();
+    } else{
+        if(groupMovements==""){
+            companyNewPersonnel="000";
+        } else{
+            groupNewPersonnel=groupMovements;
+        }
+        if(companyMovements==""){
+            companyNewPersonnel="000";
+        } else{
+            companyNewPersonnel=companyMovements;
+        }
+        if(plantMovements==""){
+            plantNewPersonnel="000";
+        } else{
+            plantNewPersonnel=plantMovements;
+        }
+        if(departmentMovements==""){
+            departmentNewPersonnel="000000";
+        } else{
+            departmentNewPersonnel=departmentMovements;
+        }
+        if(cveMovements==""){
+            cveNewPersonnel="0";
+        } else{
+            cveNewPersonnel=cveMovements;
+        }
+        if(nameMovements==""){
+            nameNewPersonnel="0";
+        } else{
+            nameNewPersonnel=nameMovements;
+        }
+        if(baseSalaryMovements==0){
+            baseSalaryMovements=0;
+        } else{
+            baseSalaryNewPersonnel=baseSalaryMovements;
+        }
+        if(hireDateMovements==""){
+            hireDateNewPersonnel=systemDate;
+        } else{
+            hireDateNewPersonnel=hireDateMovements;
+        }
+
+    }
 }
 
 //BAJA DE UN TRABAJADOR
