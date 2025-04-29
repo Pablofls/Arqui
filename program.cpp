@@ -40,14 +40,43 @@ void openFiles(){
         exit (EXIT_FAILURE);
     }
 }
+/***************** GLOBAL VARIABLES *******************/
+//Variables for Movement Archive
+char moveTypeMovements;
+string workerMovements;
+string groupMovements;
+string companyMovements;
+string plantMovements;
+string departmentMovements;
+string cveMovements;
+string nameMovements;
+int baseSalaryMovements;
+string hireDateMovements;
+
+//Variables for Personnel Archive
+string workerPersonnel;
+string groupPersonnel;
+string companyPersonnel;
+string plantPersonnel;
+string departmentPersonnel;
+string cvePersonnel;
+string namePersonnel;
+int baseSalaryPersonnel;
+string hireDatePersonnel;
+
 
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
-void archPersonnelMovements(){
+void readMovement(){
+    movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements;
+
 }
 
 //Read personal archive
-void archPersonnel(){}
+void readPersonnel(){
+    personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel;
+
+}
 
 /***************** ABORT *******************/
 
@@ -79,6 +108,64 @@ void controlProgram(){
 /***************** PERSONNEL MOVEMENTS *******************/
 
 void personnelMovements(){
+    
+    //Same Keys
+    if (workerMovements == workerPersonnel){
+        switch (moveTypeMovements)
+        {
+        //Invalid Register
+        case 'A':
+            //Call COPY
+            break;
+        
+        //Invalid Dismiss
+        case 'B':
+            //Call Dismiss (Baja)
+            break;
+        
+        //Valid Change
+        case 'C':
+            //Call Change
+            break;
+        
+        default:
+            cout << "Fail on recognizign movement type" << endl;
+            break;
+
+        readMovement();
+        readPersonnel();
+        }
+    
+    } else if (workerMovements < workerPersonnel){ 
+        switch (moveTypeMovements)
+        {
+        //Valid Register
+        case 'A':
+            //Call COPY
+            break;
+        
+        //Invalid Dismiss
+        case 'B':
+            //Call Dismiss (Baja)
+            break;
+        
+        //Invalid Change
+        case 'C':
+            //Call Change
+            break;
+        
+        default:
+            cout << "Fail on recognizign movement type" << endl;
+            break;
+        
+        readMovement();
+        }
+
+    } else {
+        //Call COPY
+        readPersonnel();
+    }
+
     //Modulo de movimientos (ETHAN)
 }
 
