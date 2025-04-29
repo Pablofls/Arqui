@@ -21,6 +21,7 @@ using namespace std;
 ifstream movements("movements.txt");
 ifstream personnel("personnel.csv");
 ofstream newPersonnel("newpersonnel.csv");
+ofstream writeMovements("writeMovements.txt");
 
 
 
@@ -105,10 +106,9 @@ realizar en el módulo que lee y sugiero que se detecte al
 momento de que el trabajador leído sea menor al anterior.
 */
 //Aborts porgram (ETHAN)
-void abort(){
-    
-
-}
+/*void abort(){
+    //Abort
+}*/
 
 /***************** FINAL REPORT *******************/
 
@@ -125,6 +125,17 @@ void controlProgram(){
 
 
 /***************** PERSONNEL MOVEMENTS *******************/
+void personnelCopy(){
+    newPersonnel << workerPersonnel << ", " 
+    << groupPersonnel << ", "
+    << companyPersonnel << ", "
+    << plantPersonnel << ", "
+    << departmentPersonnel << ", "
+    << cvePersonnel << ", "
+    << namePersonnel << ", "
+    << baseSalaryPersonnel << ", "
+    << hireDatePersonnel;
+}
 
 void personnelMovements(){
     
@@ -232,7 +243,7 @@ void registerEmployee(){
         }
         if(hireDateMovements==""){
             hireDateNewPersonnel=systemDate;
-        } else{
+        } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
 
@@ -244,7 +255,11 @@ void registerEmployee(){
 Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
-    
+    if(existe){
+        writeMovements << workerMovements <<" BAJA VALIDA\n";
+    } else{
+        writeMovements << workerMovements <<" BAJA INVALIDA\n";
+    }
 }
 
 //CAMBIO DE UN TRABAJADOR
@@ -260,17 +275,7 @@ ejemplo para Alta bastaría indicando solamente: "Generar registro en
 NP con la información de Mov y valores defaults"
 */
 
-void personnelCopy(){
-    newPersonnel << workerPersonnel << ", " 
-    << groupPersonnel << ", "
-    << companyPersonnel << ", "
-    << plantPersonnel << ", "
-    << departmentPersonnel << ", "
-    << cvePersonnel << ", "
-    << namePersonnel << ", "
-    << baseSalaryPersonnel << ", "
-    << hireDatePersonnel;
-}
+
 
 
 
@@ -292,7 +297,6 @@ void closeFiles(){
 int main(){
     openFiles();
     readMovement();
-    
     closeFiles();
     return 0;
 }
