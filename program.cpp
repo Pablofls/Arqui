@@ -19,8 +19,8 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-ifstream movements("movements.txt");
-ifstream personnel("personnel.csv");
+ifstream movements("movementsTest1.csv");
+ifstream personnel("personnelTest1.csv");
 ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
@@ -189,7 +189,7 @@ void changeEmployee(){
         hireDateNewPersonnel=hireDatePersonnel;
     }
 
-    newPersonnel<<workerNewPersonnel
+    newPersonnel << workerNewPersonnel
     << groupNewPersonnel
     << companyNewPersonnel
     << plantNewPersonnel
@@ -241,6 +241,26 @@ void abort(){
     //Impresion de como se veria el reporte
 //}
 
+//BAJA DE UN TRABAJADOR
+/*
+Baja no se realiza ninguna acción
+*/
+void deleteEmployee(){
+    if(existe){
+        writeReport << workerMovements <<" VALID DELETE\n";
+    } else{
+        writeReport << workerMovements <<" INVALID DELETE\n";
+    }
+    newPersonnel << workerPersonnel << ", " 
+    << groupPersonnel << ", "
+    << companyPersonnel << ", "
+    << plantPersonnel << ", "
+    << departmentPersonnel << ", "
+    << cvePersonnel << ", "
+    << namePersonnel << ", "
+    << baseSalaryPersonnel << ", "
+    << hireDatePersonnel;
+}
 
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelCopy(){
@@ -276,7 +296,7 @@ void personnelMovements(){
         case 'C':
             //Call Change
             changeEmployee();
-            writeReport << workerMovements << " VALID REPORT\n";
+            writeReport << workerMovements << " VALID CHANGE\n";
             break;
         
         default:
@@ -299,14 +319,14 @@ void personnelMovements(){
         
         //Invalid Delete
         case 'B':
+            deleteEmployee();
             //Mark Invalid Delete on Report
-            writeReport << workerMovements << "INVALID REPORT\n";
             break;
         
         //Invalid Change
         case 'C':
             //Mark Invalid Change on Report
-            writeReport << workerMovements << " INVALID REPORT\n";
+            writeReport << workerMovements << " INVALID CHANGE\n";
             break;
         
         default:
@@ -329,7 +349,6 @@ No es necesario en Alta validar si el trabajador existe.
 */
 void registerEmployee(){
     if(existe){
-        writeReport << workerMovements << " VALID REGISTER\n";
         personnelCopy();
     } else{
         if(groupMovements==""){
@@ -372,21 +391,19 @@ void registerEmployee(){
         } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
-        //writeReport << workerPersonnel << "          A L T A" << endl;
+        newPersonnel << workerPersonnel << ", " 
+        << groupPersonnel << ", "
+        << companyPersonnel << ", "
+        << plantPersonnel << ", "
+        << departmentPersonnel << ", "
+        << cvePersonnel << ", "
+        << namePersonnel << ", "
+        << baseSalaryPersonnel << ", "
+        << hireDatePersonnel;
     }
 }
 
-//BAJA DE UN TRABAJADOR
-/*
-Baja no se realiza ninguna acción
-*/
-void deleteEmployee(){
-    if(existe){
-        writeReport << workerMovements <<" VALID DELETE\n";
-    } else{
-        writeReport << workerMovements <<" INVALID DELETE\n";
-    }
-}
+
 
 //Copia
 
