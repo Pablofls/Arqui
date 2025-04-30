@@ -241,36 +241,6 @@ void abort(){
     //Impresion de como se veria el reporte
 //}
 
-/***************** CONTROL PROGRAM *******************/
-
-void controlProgram(){
-    bool eofMovements = false;
-    bool eofPersonnel = false;
-
-    readMovement();
-    readPersonnel();
-
-    while (!(eofPersonnel && eofMovements)) {
-        personnelMovements();
-
-        if (personnel.eof()){
-            eofPersonnel = true;
-        } else {
-            readPersonnel();
-        }
-
-        if (movements.eof()){
-            eofMovements = true;
-        }
-        else {
-            readMovement();
-        }
-    }
-
-    //Call to create Final Report
-    //writeReport();
-}
-
 
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelCopy(){
@@ -293,17 +263,20 @@ void personnelMovements(){
         //Invalid Register
         case 'A':
             //Mark Invalid Register on Report
+            writeReport << workerMovements << " INVALID REGISTER\n";
             break;
         
         //Invalid Delete
         case 'B':
             //Mark invalid Delete on Report
+            writeReport << workerMovements << " INVALID DELETE\n";
             break;
         
         //Valid Change
         case 'C':
             //Call Change
             changeEmployee();
+            writeReport << workerMovements << " VALID REPORT\n";
             break;
         
         default:
@@ -321,16 +294,19 @@ void personnelMovements(){
         case 'A':
             //Call COPY
             personnelCopy();
+            writeReport << workerMovements << " VALID REGISTER\n";
             break;
         
         //Invalid Delete
         case 'B':
             //Mark Invalid Delete on Report
+            writeReport << workerMovements << "INVALID REPORT\n";
             break;
         
         //Invalid Change
         case 'C':
             //Mark Invalid Change on Report
+            writeReport << workerMovements << " INVALID REPORT\n";
             break;
         
         default:
@@ -353,7 +329,7 @@ No es necesario en Alta validar si el trabajador existe.
 */
 void registerEmployee(){
     if(existe){
-        cout<<"ALTA INVALIDA"<<endl;
+        writeReport << workerMovements << " VALID REGISTER\n";
         personnelCopy();
     } else{
         if(groupMovements==""){
@@ -396,7 +372,7 @@ void registerEmployee(){
         } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
-        writeReport << workerPersonnel << "          A L T A" << endl;
+        //writeReport << workerPersonnel << "          A L T A" << endl;
     }
 }
 
@@ -406,9 +382,9 @@ Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
     if(existe){
-        writeReport << workerMovements <<" BAJA VALIDA\n";
+        writeReport << workerMovements <<" VALID DELETE\n";
     } else{
-        writeReport << workerMovements <<" BAJA INVALIDA\n";
+        writeReport << workerMovements <<" INVALID DELETE\n";
     }
 }
 
@@ -433,6 +409,38 @@ void closeFiles(){
     personnel.close();
     newPersonnel.close();
 }
+
+
+/***************** CONTROL PROGRAM *******************/
+
+void controlProgram(){
+    bool eofMovements = false;
+    bool eofPersonnel = false;
+
+    readMovement();
+    readPersonnel();
+
+    while (!(eofPersonnel && eofMovements)) {
+        personnelMovements();
+
+        if (personnel.eof()){
+            eofPersonnel = true;
+        } else {
+            readPersonnel();
+        }
+
+        if (movements.eof()){
+            eofMovements = true;
+        }
+        else {
+            readMovement();
+        }
+    }
+
+    //Call to create Final Report
+    //writeReport();
+}
+
 
 
 /***************** MAIN PROGRAM *******************/
