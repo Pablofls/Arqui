@@ -15,6 +15,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
@@ -83,9 +84,30 @@ string systemDate="4/29/2025";
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
-    movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements;
-    
+    string linea;
+    char delimitador = ',';
 
+    if (getline(movements, linea)) {
+        stringstream stream(linea);
+
+        string moveTypeStr, baseSalaryStr;
+
+        getline(stream, moveTypeStr, delimitador);
+        getline(stream, workerMovements, delimitador);
+        getline(stream, groupMovements, delimitador);
+        getline(stream, companyMovements, delimitador);
+        getline(stream, plantMovements, delimitador);
+        getline(stream, departmentMovements, delimitador);
+        getline(stream, cveMovements, delimitador);
+        getline(stream, nameMovements, delimitador);
+        getline(stream, baseSalaryStr, delimitador);
+        getline(stream, hireDateMovements, delimitador);
+
+        // Conversión de tipo
+        moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
+        baseSalaryMovements = stod(baseSalaryStr);
+
+    }
 }
 
 //Read personal archive
