@@ -238,9 +238,9 @@ void abort(){
 /***************** FINAL REPORT *******************/
 
 //Write Report
-void writeReport(){
+//void writeReport(){
     //Impresion de como se veria el reporte
-}
+//}
 
 /***************** CONTROL PROGRAM *******************/
 
@@ -269,7 +269,7 @@ void controlProgram(){
     }
 
     //Call to create Final Report
-    writeReport();
+    //writeReport();
 }
 
 
@@ -398,7 +398,7 @@ void registerEmployee(){
         } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
-        writeMovements << workerPersonnel << "          A L T A" << endl;
+        writeReport << workerPersonnel << "          A L T A" << endl;
     }
 }
 
@@ -408,9 +408,9 @@ Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
     if(existe){
-        writeMovements << workerMovements <<" BAJA VALIDA\n";
+        writeReport << workerMovements <<" BAJA VALIDA\n";
     } else{
-        writeMovements << workerMovements <<" BAJA INVALIDA\n";
+        writeReport << workerMovements <<" BAJA INVALIDA\n";
     }
 }
 
@@ -492,7 +492,7 @@ void controlProgram(){
 
     readMovement();
     readPersonnel();
-    writeReport();
+    //writeReport();
     while (!(eofPersonnel && eofMovements)) {
         personnelMovements();
         deleteEmployee();
