@@ -25,7 +25,6 @@ ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
 
-
 //VERIFICAR ARCHIVOS
 void openFiles(){
     if (!movements) 
@@ -287,7 +286,6 @@ void personnelCopy(){
 }
 
 void personnelMovements(){
-    
     //Same Keys
     if (workerMovements == workerPersonnel){
         switch (moveTypeMovements)
@@ -414,65 +412,6 @@ void deleteEmployee(){
     }
 }
 
-//CAMBIO DE UN TRABAJADOR
-void changeEmployee(){
-    if (workerMovements!="0"){
-        workerNewPersonnel=workerMovements;
-    } else {
-        workerNewPersonnel=workerPersonnel;
-    }
-    if (groupMovements!="0"){
-        groupNewPersonnel=groupMovements;
-    } else {
-        groupNewPersonnel=groupPersonnel;
-    }
-    if (companyMovements!="0"){
-        companyNewPersonnel=companyMovements;
-    } else {
-        companyNewPersonnel=companyPersonnel;
-    }
-    if (plantMovements!="0"){
-        plantNewPersonnel=plantMovements;
-    } else {
-        plantNewPersonnel=plantPersonnel;
-    }
-    if (departmentMovements!="0"){
-        departmentNewPersonnel=departmentMovements;
-    } else {
-        departmentNewPersonnel=departmentPersonnel;
-    }
-    if (cveMovements!="0"){
-        cveNewPersonnel=cveMovements;
-    } else {
-        cveNewPersonnel=cvePersonnel;
-    }
-    if (nameMovements!="0"){
-        nameNewPersonnel=nameMovements;
-    } else {
-        nameNewPersonnel=namePersonnel;
-    }
-    if (baseSalaryMovements!=0){
-        baseSalaryNewPersonnel=baseSalaryMovements;
-    } else {
-        baseSalaryNewPersonnel=baseSalaryPersonnel;
-    }
-    if (hireDateMovements!="0"){
-        hireDateNewPersonnel=hireDateMovements;
-    } else {
-        hireDateNewPersonnel=hireDatePersonnel;
-    }
-
-    newPersonnel<<workerNewPersonnel
-    << groupNewPersonnel
-    << companyNewPersonnel
-    << plantNewPersonnel
-    << departmentNewPersonnel
-    << cveNewPersonnel
-    << nameNewPersonnel
-    << baseSalaryNewPersonnel
-    << hireDateNewPersonnel;
-}
-
 //Copia
 
 
@@ -484,35 +423,6 @@ NP con la información de Mov y valores defaults"
 
 
 
-/***************** CONTROL PROGRAM *******************/
-
-void controlProgram(){
-    bool eofMovements = false;
-    bool eofPersonnel = false;
-
-    readMovement();
-    readPersonnel();
-    //writeReport();
-    while (!(eofPersonnel && eofMovements)) {
-        personnelMovements();
-        deleteEmployee();
-        if (personnel.eof()){
-            eofPersonnel = true;
-        } else {
-            readPersonnel();
-        }
-
-        if (movements.eof()){
-            eofMovements = true;
-        }
-        else {
-            readMovement();
-        }
-    }
-
-    //Call to create Final Report
-    
-}
 
 /***************** CLOSE ARCHIVES *******************/
 
