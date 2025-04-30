@@ -83,18 +83,14 @@ string systemDate="4/29/2025";
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
-    while ( movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements){
-        cout << moveTypeMovements << " " << workerMovements << " " << groupMovements << " "  << companyMovements << " "  << plantMovements << " "  << departmentMovements << " "  << cveMovements << " "  << nameMovements << " " << baseSalaryMovements << " " << hireDateMovements << endl;
-    }
+    movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements;
+    
 
 }
 
 //Read personal archive
 void readPersonnel(){
-    while (personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel) {
-        cout << workerPersonnel << " " << groupPersonnel << " " << companyPersonnel << " " << plantPersonnel << " " << departmentPersonnel << " " << cvePersonnel << " " << namePersonnel << " " << baseSalaryPersonnel << " " << hireDatePersonnel << endl;
-    }
-
+    personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel;
 }
 
 /***************** ABORT *******************/
@@ -106,9 +102,30 @@ realizar en el módulo que lee y sugiero que se detecte al
 momento de que el trabajador leído sea menor al anterior.
 */
 //Aborts porgram (ETHAN)
-/*void abort(){
-    //Abort
-}*/
+void abort(){
+    string previousWorker = "";
+
+    //Checks Movements Archive
+    while (movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements){
+        if (!previousWorker.empty() && previousWorker > workerMovements) {
+            cerr << "ERROR: El archivo 'movements.txt' no está ordenado.\n";
+            exit(EXIT_FAILURE);
+        }
+        previousWorker = workerMovements;
+
+    }
+
+    previousWorker = "";
+
+    //Checks Personnel Archive
+    while (personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel) {
+        if (!previousWorker.empty() && previousWorker > workerPersonnel) {
+            cerr << "ERROR: El archivo 'personnel.csv' no está ordenado.\n";
+            exit(EXIT_FAILURE);
+        }
+        previousWorker = workerPersonnel;
+    }
+}
 
 /***************** FINAL REPORT *******************/
 
@@ -120,7 +137,31 @@ void writeReport(){
 /***************** CONTROL PROGRAM *******************/
 
 void controlProgram(){
-    //Modulo de control (ETHAN)
+    bool eofMovements = false;
+    bool eofPersonnel = false;
+
+    readMovement();
+    readPersonnel();
+
+    while (!(eofPersonnel && eofMovements)) {
+        personnelMovements();
+
+        if (personnel.eof()){
+            eofPersonnel = true;
+        } else {
+            readPersonnel();
+        }
+
+        if (movements.eof()){
+            eofMovements = true;
+        }
+        else {
+            readMovement();
+        }
+    }
+
+    //Call to create Final Report
+    writeReport();
 }
 
 
@@ -351,10 +392,9 @@ void closeFiles(){
 /***************** MAIN PROGRAM *******************/
 
 
-
 int main(){
     openFiles();
-    readMovement();
+    controlProgram();
     closeFiles();
     return 0;
 }
