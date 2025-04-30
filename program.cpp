@@ -1,7 +1,7 @@
 /*
 #Program: Personnel Management
 #Objective: Modify personnel...
-#Author: Pablo Flores Rodriguez jytjtj
+#Author: Pablo Flores Rodriguez
 #Author: Ethan Rivera Saldivar
 #Author:Christopher Reeker Cireno
 #Author:Arturo Vargas Espinosa
@@ -19,8 +19,8 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-ifstream movements("movementsTest4.csv");
-ifstream personnel("personnelTest4.csv");
+ifstream movements("movementsTest1.csv");
+ifstream personnel("personnelTest1.csv");
 ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
@@ -400,8 +400,14 @@ void personnelMovements(bool &hasMov, bool &hasPers){
             
             }
             hasMov = readMovement();
+            
+        } else {
+            personnelCopy();
+            hasPers = readPersonnel();
         }
-    } else if (hasMov){
+        return;
+    }
+    if (hasMov){
         switch (moveTypeMovements)
         {
         //Valid Register
@@ -429,13 +435,14 @@ void personnelMovements(bool &hasMov, bool &hasPers){
         
         }
         hasMov = readMovement();
+        return;
 
-    } else if (hasPers){
+    } 
+    if (hasPers){
         personnelCopy();
         hasPers = readPersonnel();
-        }
-
-     
+        return;
+        } 
 }
 
 /*
@@ -462,17 +469,11 @@ void controlProgram(){
     bool hasMov  = readMovement();
     bool hasPers = readPersonnel();
 
-    // 2) Procesa hasta que ambos archivos se acaben
+    //Procesa hasta que ambos archivos se acaben
     while (hasMov || hasPers) {
         personnelMovements(hasMov, hasPers);
     }
 
-    /*
-    while (hasPers) {
-        personnelCopy();
-        hasPers = readPersonnel();
-    }
-    */
 }
 
 
