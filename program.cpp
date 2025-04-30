@@ -105,14 +105,100 @@ void readMovement(){
 
         // Conversión de tipo
         moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
-        baseSalaryMovements = stod(baseSalaryStr);
+        try {
+            baseSalaryMovements = stod(baseSalaryStr);
+        } catch (const std::invalid_argument& e) {
+            baseSalaryMovements = 0; // Default value if conversion fails
+        }
 
     }
 }
 
 //Read personal archive
 void readPersonnel(){
-    personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel;
+    string line;
+    char delimiter = ',';
+
+    if (getline(personnel, line)) {
+        stringstream stream(line);
+
+        getline(stream, workerPersonnel, delimiter);
+        getline(stream, groupPersonnel, delimiter);
+        getline(stream, companyPersonnel, delimiter);
+        getline(stream, plantPersonnel, delimiter);
+        getline(stream, departmentPersonnel, delimiter);
+        getline(stream, cvePersonnel, delimiter);
+        getline(stream, namePersonnel, delimiter);
+
+        string baseSalaryStr;
+        getline(stream, baseSalaryStr, delimiter);
+        try {
+            baseSalaryPersonnel = stoi(baseSalaryStr);
+        } catch (const std::invalid_argument&) {
+            baseSalaryPersonnel = 0; // Default value if conversion fails
+        }
+
+        getline(stream, hireDatePersonnel, delimiter);
+    }
+}
+
+//CAMBIO DE UN TRABAJADOR
+void changeEmployee(){
+    if (workerMovements!="0"){
+        workerNewPersonnel=workerMovements;
+    } else {
+        workerNewPersonnel=workerPersonnel;
+    }
+    if (groupMovements!="000"){
+        groupNewPersonnel=groupMovements;
+    } else {
+        groupNewPersonnel=groupPersonnel;
+    }
+    if (companyMovements!="000"){
+        companyNewPersonnel=companyMovements;
+    } else {
+        companyNewPersonnel=companyPersonnel;
+    }
+    if (plantMovements!="000"){
+        plantNewPersonnel=plantMovements;
+    } else {
+        plantNewPersonnel=plantPersonnel;
+    }
+    if (departmentMovements!="000000"){
+        departmentNewPersonnel=departmentMovements;
+    } else {
+        departmentNewPersonnel=departmentPersonnel;
+    }
+    if (cveMovements!="O"){
+        cveNewPersonnel=cveMovements;
+    } else {
+        cveNewPersonnel=cvePersonnel;
+    }
+    if (nameMovements!=" "){
+        nameNewPersonnel=nameMovements;
+    } else {
+        nameNewPersonnel=namePersonnel;
+    }
+    if (baseSalaryMovements!=0){
+        baseSalaryNewPersonnel=baseSalaryMovements;
+    } else {
+        baseSalaryNewPersonnel=baseSalaryPersonnel;
+    }
+    if (hireDateMovements!=systemDate){
+        hireDateNewPersonnel=hireDateMovements;
+    } else {
+        hireDateNewPersonnel=hireDatePersonnel;
+    }
+
+    newPersonnel<<workerNewPersonnel
+    << groupNewPersonnel
+    << companyNewPersonnel
+    << plantNewPersonnel
+    << departmentNewPersonnel
+    << cveNewPersonnel
+    << nameNewPersonnel
+    << baseSalaryNewPersonnel
+    << hireDateNewPersonnel;
 }
 
 /***************** ABORT *******************/
@@ -153,38 +239,12 @@ void abort(){
 
 //Write Report
 void writeReport(){
-    //Impresion de como se veria el reporte
+    writeMovements << "TRABAJADOR          MOVIMIENTO EFECTUADO" << endl;
+    writeMovements << "----------          ---------------------" << endl;
+    
 }
 
-/***************** CONTROL PROGRAM *******************/
 
-void controlProgram(){
-    bool eofMovements = false;
-    bool eofPersonnel = false;
-
-    readMovement();
-    readPersonnel();
-
-    while (!(eofPersonnel && eofMovements)) {
-        personnelMovements();
-
-        if (personnel.eof()){
-            eofPersonnel = true;
-        } else {
-            readPersonnel();
-        }
-
-        if (movements.eof()){
-            eofMovements = true;
-        }
-        else {
-            readMovement();
-        }
-    }
-
-    //Call to create Final Report
-    writeReport();
-}
 
 
 /***************** PERSONNEL MOVEMENTS *******************/
@@ -269,7 +329,7 @@ No es necesario en Alta validar si el trabajador existe.
 */
 void registerEmployee(){
     if(existe){
-        cout<<"ALTA INVALIDA"<<endl;
+        writeMovements << workerPersonnel << "          ALTA NO EXITOSA" << endl;
         personnelCopy();
     } else{
         if(groupMovements==""){
@@ -312,7 +372,7 @@ void registerEmployee(){
         } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
-
+        writeMovements << workerPersonnel << "          A L T A" << endl;
     }
 }
 
@@ -322,70 +382,13 @@ Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
     if(existe){
-        writeMovements << workerMovements <<" BAJA VALIDA\n";
+        writeMovements << workerPersonnel << "          B A J A" << endl;
     } else{
-        writeMovements << workerMovements <<" BAJA INVALIDA\n";
+        writeMovements << workerPersonnel << "          BAJA NO EXITOSA" << endl;
     }
 }
 
-//CAMBIO DE UN TRABAJADOR
-void changeEmployee(){
-    if (workerMovements!="0"){
-        workerNewPersonnel=workerMovements;
-    } else {
-        workerNewPersonnel=workerPersonnel;
-    }
-    if (groupMovements!="000"){
-        groupNewPersonnel=groupMovements;
-    } else {
-        groupNewPersonnel=groupPersonnel;
-    }
-    if (companyMovements!="000"){
-        companyNewPersonnel=companyMovements;
-    } else {
-        companyNewPersonnel=companyPersonnel;
-    }
-    if (plantMovements!="000"){
-        plantNewPersonnel=plantMovements;
-    } else {
-        plantNewPersonnel=plantPersonnel;
-    }
-    if (departmentMovements!="000000"){
-        departmentNewPersonnel=departmentMovements;
-    } else {
-        departmentNewPersonnel=departmentPersonnel;
-    }
-    if (cveMovements!="O"){
-        cveNewPersonnel=cveMovements;
-    } else {
-        cveNewPersonnel=cvePersonnel;
-    }
-    if (nameMovements!=" "){
-        nameNewPersonnel=nameMovements;
-    } else {
-        nameNewPersonnel=namePersonnel;
-    }
-    if (baseSalaryMovements!=0){
-        baseSalaryNewPersonnel=baseSalaryMovements;
-    } else {
-        baseSalaryNewPersonnel=baseSalaryPersonnel;
-    }
-    if (hireDateMovements!=systemDate){
-        hireDateNewPersonnel=hireDateMovements;
-    } else {
-        hireDateNewPersonnel=hireDatePersonnel;
-    }
 
-    newPersonnel<<workerNewPersonnel
-    << groupNewPersonnel
-    << companyNewPersonnel
-    << plantNewPersonnel
-    << departmentNewPersonnel
-    << cveNewPersonnel
-    << nameNewPersonnel
-    << baseSalaryNewPersonnel
-    << hireDateNewPersonnel;
-}
 
 //Copia
 
@@ -398,7 +401,35 @@ NP con la información de Mov y valores defaults"
 
 
 
+/***************** CONTROL PROGRAM *******************/
 
+void controlProgram(){
+    bool eofMovements = false;
+    bool eofPersonnel = false;
+
+    readMovement();
+    readPersonnel();
+    writeReport();
+    while (!(eofPersonnel && eofMovements)) {
+        personnelMovements();
+        deleteEmployee();
+        if (personnel.eof()){
+            eofPersonnel = true;
+        } else {
+            readPersonnel();
+        }
+
+        if (movements.eof()){
+            eofMovements = true;
+        }
+        else {
+            readMovement();
+        }
+    }
+
+    //Call to create Final Report
+    
+}
 
 /***************** CLOSE ARCHIVES *******************/
 
