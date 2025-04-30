@@ -80,6 +80,7 @@ string hireDateNewPersonnel;
 
 bool existe=false;
 string systemDate="4/29/2025";
+
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
@@ -141,7 +142,71 @@ void readPersonnel(){
     }
 }
 
-//CAMBIO DE UN TRABAJADOR
+/***************** REGISTER *******************/
+/*
+No es necesario en Alta validar si el trabajador existe. 
+*/
+void registerEmployee(){
+    if (workerMovements == ""){
+        workerNewPersonnel = "";
+    } else {
+        workerNewPersonnel = workerMovements;
+    }
+    if(groupMovements==""){
+        companyNewPersonnel="000";
+    } else{
+        groupNewPersonnel=groupMovements;
+    }
+    if(companyMovements==""){
+        companyNewPersonnel="000";
+    } else{
+        companyNewPersonnel=companyMovements;
+    }
+    if(plantMovements==""){
+        plantNewPersonnel="000";
+    } else{
+        plantNewPersonnel=plantMovements;
+    }
+    if(departmentMovements==""){
+        departmentNewPersonnel="000000";
+    } else{
+        departmentNewPersonnel=departmentMovements;
+    }
+    if(cveMovements==""){
+        cveNewPersonnel="0";
+    } else{
+        cveNewPersonnel=cveMovements;
+    }
+    if(nameMovements==""){
+        nameNewPersonnel="0";
+    } else{
+        nameNewPersonnel=nameMovements;
+    }
+    if(baseSalaryMovements==0){
+        baseSalaryMovements=0;
+    } else{
+        baseSalaryNewPersonnel=baseSalaryMovements;
+    }
+    if(hireDateMovements==""){
+        hireDateNewPersonnel=systemDate;
+    } else{ 
+        hireDateNewPersonnel=hireDateMovements;
+    }
+    newPersonnel 
+    << workerNewPersonnel << ", "
+    << groupNewPersonnel  << ", "
+    << companyNewPersonnel<< ", "
+    << plantNewPersonnel  << ", "
+    << departmentNewPersonnel << ", "
+    << cveNewPersonnel    << ", "
+    << nameNewPersonnel   << ", "
+    << baseSalaryNewPersonnel << ", "
+    << hireDateNewPersonnel << "\n";
+}
+
+
+/***************** CHANGE *******************/
+
 void changeEmployee(){
     if (workerMovements!="0"){
         workerNewPersonnel=workerMovements;
@@ -173,7 +238,7 @@ void changeEmployee(){
     } else {
         cveNewPersonnel=cvePersonnel;
     }
-    if (nameMovements!=" "){
+    if (nameMovements!=""){
         nameNewPersonnel=nameMovements;
     } else {
         nameNewPersonnel=namePersonnel;
@@ -188,17 +253,54 @@ void changeEmployee(){
     } else {
         hireDateNewPersonnel=hireDatePersonnel;
     }
-
-    newPersonnel << workerNewPersonnel
-    << groupNewPersonnel
-    << companyNewPersonnel
-    << plantNewPersonnel
-    << departmentNewPersonnel
-    << cveNewPersonnel
-    << nameNewPersonnel
-    << baseSalaryNewPersonnel
-    << hireDateNewPersonnel;
+    newPersonnel 
+        << workerNewPersonnel << ", "
+        << groupNewPersonnel  << ", "
+        << companyNewPersonnel<< ", "
+        << plantNewPersonnel  << ", "
+        << departmentNewPersonnel << ", "
+        << cveNewPersonnel    << ", "
+        << nameNewPersonnel   << ", "
+        << baseSalaryNewPersonnel << ", "
+        << hireDateNewPersonnel
+        << '\n';
 }
+
+/***************** COPY *******************/
+void personnelCopy(){
+    newPersonnel
+        << workerPersonnel << ", "
+        << groupPersonnel  << ", "
+        << companyPersonnel<< ", "
+        << plantPersonnel  << ", "
+        << departmentPersonnel << ", "
+        << cvePersonnel    << ", "
+        << namePersonnel   << ", "
+        << baseSalaryPersonnel << ", "
+        << hireDatePersonnel
+        << "\n";
+}
+
+/***************** DELETE *******************/
+
+/*
+Baja no se realiza ninguna acción
+*/
+void deleteEmployee(){
+    /*
+    newPersonnel 
+        << workerNewPersonnel << ", "
+        << groupNewPersonnel  << ", "
+        << companyNewPersonnel<< ", "
+        << plantNewPersonnel  << ", "
+        << departmentNewPersonnel << ", "
+        << cveNewPersonnel    << ", "
+        << nameNewPersonnel   << ", "
+        << baseSalaryNewPersonnel << ", "
+        << hireDateNewPersonnel << "\n";
+    */
+}
+
 
 /***************** ABORT *******************/
 
@@ -234,47 +336,8 @@ void abort(){
     }
 }
 
-/***************** FINAL REPORT *******************/
-
-//Write Report
-//void writeReport(){
-    //Impresion de como se veria el reporte
-//}
-
-//BAJA DE UN TRABAJADOR
-/*
-Baja no se realiza ninguna acción
-*/
-void deleteEmployee(){
-    if(existe){
-        writeReport << workerMovements <<" VALID DELETE\n";
-    } else{
-        writeReport << workerMovements <<" INVALID DELETE\n";
-    }
-    newPersonnel << workerPersonnel << ", " 
-    << groupPersonnel << ", "
-    << companyPersonnel << ", "
-    << plantPersonnel << ", "
-    << departmentPersonnel << ", "
-    << cvePersonnel << ", "
-    << namePersonnel << ", "
-    << baseSalaryPersonnel << ", "
-    << hireDatePersonnel;
-}
 
 /***************** PERSONNEL MOVEMENTS *******************/
-void personnelCopy(){
-    newPersonnel << workerPersonnel << ", " 
-    << groupPersonnel << ", "
-    << companyPersonnel << ", "
-    << plantPersonnel << ", "
-    << departmentPersonnel << ", "
-    << cvePersonnel << ", "
-    << namePersonnel << ", "
-    << baseSalaryPersonnel << ", "
-    << hireDatePersonnel;
-}
-
 void personnelMovements(){
     //Same Keys
     if (workerMovements == workerPersonnel){
@@ -283,13 +346,16 @@ void personnelMovements(){
         //Invalid Register
         case 'A':
             //Mark Invalid Register on Report
+            //Call COPY
+            personnelCopy();
             writeReport << workerMovements << " INVALID REGISTER\n";
             break;
         
-        //Invalid Delete
+        //Valid Delete
         case 'B':
-            //Mark invalid Delete on Report
-            writeReport << workerMovements << " INVALID DELETE\n";
+            //Mark valid Delete on Report
+            deleteEmployee();
+            writeReport << workerMovements << " VALID DELETE\n";
             break;
         
         //Valid Change
@@ -302,9 +368,6 @@ void personnelMovements(){
         default:
             cout << "Fail on recognizign movement type" << endl;
             break;
-
-        readMovement();
-        readPersonnel();
         }
     
     } else if (workerMovements < workerPersonnel){ 
@@ -312,15 +375,14 @@ void personnelMovements(){
         {
         //Valid Register
         case 'A':
-            //Call COPY
-            personnelCopy();
+            registerEmployee();
             writeReport << workerMovements << " VALID REGISTER\n";
             break;
         
         //Invalid Delete
         case 'B':
-            deleteEmployee();
             //Mark Invalid Delete on Report
+            writeReport << workerMovements << " INVALID DELETE\n";
             break;
         
         //Invalid Change
@@ -333,88 +395,20 @@ void personnelMovements(){
             cout << "Fail on recognizign movement type" << endl;
             break;
         
-        readMovement();
         }
 
     } else {
         //Call COPY
         personnelCopy();
-        readPersonnel();
+        //readPersonnel();
     }
 }
-
-//ALTA DE UN TRABAJADOR
-/*
-No es necesario en Alta validar si el trabajador existe. 
-*/
-void registerEmployee(){
-    if(existe){
-        personnelCopy();
-    } else{
-        if(groupMovements==""){
-            companyNewPersonnel="000";
-        } else{
-            groupNewPersonnel=groupMovements;
-        }
-        if(companyMovements==""){
-            companyNewPersonnel="000";
-        } else{
-            companyNewPersonnel=companyMovements;
-        }
-        if(plantMovements==""){
-            plantNewPersonnel="000";
-        } else{
-            plantNewPersonnel=plantMovements;
-        }
-        if(departmentMovements==""){
-            departmentNewPersonnel="000000";
-        } else{
-            departmentNewPersonnel=departmentMovements;
-        }
-        if(cveMovements==""){
-            cveNewPersonnel="0";
-        } else{
-            cveNewPersonnel=cveMovements;
-        }
-        if(nameMovements==""){
-            nameNewPersonnel="0";
-        } else{
-            nameNewPersonnel=nameMovements;
-        }
-        if(baseSalaryMovements==0){
-            baseSalaryMovements=0;
-        } else{
-            baseSalaryNewPersonnel=baseSalaryMovements;
-        }
-        if(hireDateMovements==""){
-            hireDateNewPersonnel=systemDate;
-        } else{ 
-            hireDateNewPersonnel=hireDateMovements;
-        }
-        newPersonnel << workerPersonnel << ", " 
-        << groupPersonnel << ", "
-        << companyPersonnel << ", "
-        << plantPersonnel << ", "
-        << departmentPersonnel << ", "
-        << cvePersonnel << ", "
-        << namePersonnel << ", "
-        << baseSalaryPersonnel << ", "
-        << hireDatePersonnel;
-    }
-}
-
-
-
-//Copia
-
 
 /*
 Mejorar el diseño en módulos Copia, Alta, Baja y Cambio. Por 
 ejemplo para Alta bastaría indicando solamente: "Generar registro en 
 NP con la información de Mov y valores defaults"
 */
-
-
 
 
 /***************** CLOSE ARCHIVES *******************/
@@ -453,9 +447,6 @@ void controlProgram(){
             readMovement();
         }
     }
-
-    //Call to create Final Report
-    //writeReport();
 }
 
 
