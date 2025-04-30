@@ -3,7 +3,7 @@
 #Objective: Modify personnel...
 #Author: Pablo Flores Rodriguez jytjtj
 #Author: Ethan Rivera Saldivar
-#Author:Christopher Reeker Sireno
+#Author:Christopher Reeker Cireno
 #Author:Arturo Vargas Espinosa
 #Date: April 25th, 2025
 #Class: Arquitectura de software.
@@ -15,6 +15,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
@@ -83,14 +84,121 @@ string systemDate="4/29/2025";
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
 void readMovement(){
-    movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements;
-    
+    string linea;
+    char delimitador = ',';
 
+    if (getline(movements, linea)) {
+        stringstream stream(linea);
+
+        string moveTypeStr, baseSalaryStr;
+
+        getline(stream, moveTypeStr, delimitador);
+        getline(stream, workerMovements, delimitador);
+        getline(stream, groupMovements, delimitador);
+        getline(stream, companyMovements, delimitador);
+        getline(stream, plantMovements, delimitador);
+        getline(stream, departmentMovements, delimitador);
+        getline(stream, cveMovements, delimitador);
+        getline(stream, nameMovements, delimitador);
+        getline(stream, baseSalaryStr, delimitador);
+        getline(stream, hireDateMovements, delimitador);
+
+        // Conversión de tipo
+        moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
+        try {
+            baseSalaryMovements = stod(baseSalaryStr);
+        } catch (const std::invalid_argument& e) {
+            baseSalaryMovements = 0; // Default value if conversion fails
+        }
+
+    }
 }
 
 //Read personal archive
 void readPersonnel(){
-    personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel;
+    string line;
+    char delimiter = ',';
+
+    if (getline(personnel, line)) {
+        stringstream stream(line);
+
+        getline(stream, workerPersonnel, delimiter);
+        getline(stream, groupPersonnel, delimiter);
+        getline(stream, companyPersonnel, delimiter);
+        getline(stream, plantPersonnel, delimiter);
+        getline(stream, departmentPersonnel, delimiter);
+        getline(stream, cvePersonnel, delimiter);
+        getline(stream, namePersonnel, delimiter);
+
+        string baseSalaryStr;
+        getline(stream, baseSalaryStr, delimiter);
+        try {
+            baseSalaryPersonnel = stoi(baseSalaryStr);
+        } catch (const std::invalid_argument&) {
+            baseSalaryPersonnel = 0; // Default value if conversion fails
+        }
+
+        getline(stream, hireDatePersonnel, delimiter);
+    }
+}
+
+//CAMBIO DE UN TRABAJADOR
+void changeEmployee(){
+    if (workerMovements!="0"){
+        workerNewPersonnel=workerMovements;
+    } else {
+        workerNewPersonnel=workerPersonnel;
+    }
+    if (groupMovements!="000"){
+        groupNewPersonnel=groupMovements;
+    } else {
+        groupNewPersonnel=groupPersonnel;
+    }
+    if (companyMovements!="000"){
+        companyNewPersonnel=companyMovements;
+    } else {
+        companyNewPersonnel=companyPersonnel;
+    }
+    if (plantMovements!="000"){
+        plantNewPersonnel=plantMovements;
+    } else {
+        plantNewPersonnel=plantPersonnel;
+    }
+    if (departmentMovements!="000000"){
+        departmentNewPersonnel=departmentMovements;
+    } else {
+        departmentNewPersonnel=departmentPersonnel;
+    }
+    if (cveMovements!="O"){
+        cveNewPersonnel=cveMovements;
+    } else {
+        cveNewPersonnel=cvePersonnel;
+    }
+    if (nameMovements!=" "){
+        nameNewPersonnel=nameMovements;
+    } else {
+        nameNewPersonnel=namePersonnel;
+    }
+    if (baseSalaryMovements!=0){
+        baseSalaryNewPersonnel=baseSalaryMovements;
+    } else {
+        baseSalaryNewPersonnel=baseSalaryPersonnel;
+    }
+    if (hireDateMovements!=systemDate){
+        hireDateNewPersonnel=hireDateMovements;
+    } else {
+        hireDateNewPersonnel=hireDatePersonnel;
+    }
+
+    newPersonnel<<workerNewPersonnel
+    << groupNewPersonnel
+    << companyNewPersonnel
+    << plantNewPersonnel
+    << departmentNewPersonnel
+    << cveNewPersonnel
+    << nameNewPersonnel
+    << baseSalaryNewPersonnel
+    << hireDateNewPersonnel;
 }
 
 /***************** ABORT *******************/
@@ -130,9 +238,9 @@ void abort(){
 /***************** FINAL REPORT *******************/
 
 //Write Report
-//void writeReport(){
+void writeReport(){
     //Impresion de como se veria el reporte
-//}
+}
 
 /***************** CONTROL PROGRAM *******************/
 
@@ -161,7 +269,7 @@ void controlProgram(){
     }
 
     //Call to create Final Report
-    //writeReport();
+    writeReport();
 }
 
 
@@ -247,7 +355,7 @@ No es necesario en Alta validar si el trabajador existe.
 */
 void registerEmployee(){
     if(existe){
-        writeReport << workerMovements << " ALTA INVALIDA\n";
+        cout<<"ALTA INVALIDA"<<endl;
         personnelCopy();
     } else{
         if(groupMovements==""){
@@ -290,7 +398,7 @@ void registerEmployee(){
         } else{ 
             hireDateNewPersonnel=hireDateMovements;
         }
-
+        writeMovements << workerPersonnel << "          A L T A" << endl;
     }
 }
 
@@ -300,9 +408,9 @@ Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
     if(existe){
-        writeReport << workerMovements <<" BAJA VALIDA\n";
+        writeMovements << workerMovements <<" BAJA VALIDA\n";
     } else{
-        writeReport << workerMovements <<" BAJA INVALIDA\n";
+        writeMovements << workerMovements <<" BAJA INVALIDA\n";
     }
 }
 
@@ -376,7 +484,35 @@ NP con la información de Mov y valores defaults"
 
 
 
+/***************** CONTROL PROGRAM *******************/
 
+void controlProgram(){
+    bool eofMovements = false;
+    bool eofPersonnel = false;
+
+    readMovement();
+    readPersonnel();
+    writeReport();
+    while (!(eofPersonnel && eofMovements)) {
+        personnelMovements();
+        deleteEmployee();
+        if (personnel.eof()){
+            eofPersonnel = true;
+        } else {
+            readPersonnel();
+        }
+
+        if (movements.eof()){
+            eofMovements = true;
+        }
+        else {
+            readMovement();
+        }
+    }
+
+    //Call to create Final Report
+    
+}
 
 /***************** CLOSE ARCHIVES *******************/
 
