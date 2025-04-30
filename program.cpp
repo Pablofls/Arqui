@@ -21,7 +21,7 @@ using namespace std;
 ifstream movements("movements.txt");
 ifstream personnel("personnel.csv");
 ofstream newPersonnel("newpersonnel.csv");
-ofstream writeMovements("writeMovements.txt");
+ofstream writeReport("writeReport.txt");
 
 
 
@@ -130,9 +130,9 @@ void abort(){
 /***************** FINAL REPORT *******************/
 
 //Write Report
-void writeReport(){
+//void writeReport(){
     //Impresion de como se veria el reporte
-}
+//}
 
 /***************** CONTROL PROGRAM *******************/
 
@@ -161,7 +161,7 @@ void controlProgram(){
     }
 
     //Call to create Final Report
-    writeReport();
+    //writeReport();
 }
 
 
@@ -247,7 +247,7 @@ No es necesario en Alta validar si el trabajador existe.
 */
 void registerEmployee(){
     if(existe){
-        cout<<"ALTA INVALIDA"<<endl;
+        writeReport << workerMovements << " ALTA INVALIDA\n";
         personnelCopy();
     } else{
         if(groupMovements==""){
@@ -300,9 +300,9 @@ Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
     if(existe){
-        writeMovements << workerMovements <<" BAJA VALIDA\n";
+        writeReport << workerMovements <<" BAJA VALIDA\n";
     } else{
-        writeMovements << workerMovements <<" BAJA INVALIDA\n";
+        writeReport << workerMovements <<" BAJA INVALIDA\n";
     }
 }
 
