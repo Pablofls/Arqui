@@ -83,11 +83,15 @@ string systemDate="4/29/2025";
 
 /***************** READ ARCHIVES *******************/
 //Read Personnel Movement Archive
-void readMovement(){
+bool readMovement(){
     string linea;
     char delimitador = ',';
 
-    if (getline(movements, linea)) {
+    if (!getline(movements, linea)) {
+        return false;
+    }
+
+    //if (getline(movements, linea)) {
         stringstream stream(linea);
 
         string moveTypeStr, baseSalaryStr;
@@ -111,15 +115,20 @@ void readMovement(){
             baseSalaryMovements = 0; // Default value if conversion fails
         }
 
-    }
+        return true;
+
+    //}
 }
 
 //Read personal archive
-void readPersonnel(){
+bool readPersonnel(){
     string line;
     char delimiter = ',';
+    if (!getline(personnel, line)){
+        return false;
+    }
 
-    if (getline(personnel, line)) {
+    //if (getline(personnel, line)) {
         stringstream stream(line);
 
         getline(stream, workerPersonnel, delimiter);
@@ -139,7 +148,9 @@ void readPersonnel(){
         }
 
         getline(stream, hireDatePersonnel, delimiter);
-    }
+
+        return true;
+    //}
 }
 
 /***************** REGISTER *******************/
@@ -207,7 +218,7 @@ void registerEmployee(){
 
 /***************** CHANGE *******************/
 
-void changeEmployee(){
+void changeEmployee(){ //Cambiar a empty
     if (workerMovements!="0"){
         workerNewPersonnel=workerMovements;
     } else {
@@ -287,18 +298,7 @@ void personnelCopy(){
 Baja no se realiza ninguna acción
 */
 void deleteEmployee(){
-    /*
-    newPersonnel 
-        << workerNewPersonnel << ", "
-        << groupNewPersonnel  << ", "
-        << companyNewPersonnel<< ", "
-        << plantNewPersonnel  << ", "
-        << departmentNewPersonnel << ", "
-        << cveNewPersonnel    << ", "
-        << nameNewPersonnel   << ", "
-        << baseSalaryNewPersonnel << ", "
-        << hireDateNewPersonnel << "\n";
-    */
+
 }
 
 
@@ -338,7 +338,7 @@ void abort(){
 
 
 /***************** PERSONNEL MOVEMENTS *******************/
-void personnelMovements(){
+void personnelMovements(bool &hasMov, bool &hasPers){
     //Same Keys
     if (workerMovements == workerPersonnel){
         switch (moveTypeMovements)
@@ -354,7 +354,6 @@ void personnelMovements(){
         //Valid Delete
         case 'B':
             //Mark valid Delete on Report
-            deleteEmployee();
             writeReport << workerMovements << " VALID DELETE\n";
             break;
         
@@ -369,6 +368,8 @@ void personnelMovements(){
             cout << "Fail on recognizign movement type" << endl;
             break;
         }
+        hasMov  = readMovement();
+        hasPers = readPersonnel();
     
     } else if (workerMovements < workerPersonnel){ 
         switch (moveTypeMovements)
@@ -387,6 +388,7 @@ void personnelMovements(){
         
         //Invalid Change
         case 'C':
+            personnelCopy();
             //Mark Invalid Change on Report
             writeReport << workerMovements << " INVALID CHANGE\n";
             break;
@@ -396,11 +398,12 @@ void personnelMovements(){
             break;
         
         }
+        hasMov = readMovement();
 
     } else {
         //Call COPY
         personnelCopy();
-        //readPersonnel();
+        hasPers = readPersonnel();
     }
 }
 
@@ -425,28 +428,14 @@ void closeFiles(){
 /***************** CONTROL PROGRAM *******************/
 
 void controlProgram(){
-    bool eofMovements = false;
-    bool eofPersonnel = false;
+    bool hasMov  = readMovement();
+    bool hasPers = readPersonnel();
 
-    readMovement();
-    readPersonnel();
-
-    while (!(eofPersonnel && eofMovements)) {
-        personnelMovements();
-
-        if (personnel.eof()){
-            eofPersonnel = true;
-        } else {
-            readPersonnel();
-        }
-
-        if (movements.eof()){
-            eofMovements = true;
-        }
-        else {
-            readMovement();
-        }
+    // 2) Procesa hasta que ambos archivos se acaben
+    while (hasMov && hasPers) {
+        personnelMovements(hasMov, hasPers);
     }
+    
 }
 
 
