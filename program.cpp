@@ -3,7 +3,7 @@
 #Objective: Modify personnel...
 #Author: Pablo Flores Rodriguez jytjtj
 #Author: Ethan Rivera Saldivar
-#Author:Christopher Reeker Sireno
+#Author:Christopher Reeker Cireno
 #Author:Arturo Vargas Espinosa
 #Date: April 25th, 2025
 #Class: Arquitectura de software.
@@ -335,32 +335,32 @@ void changeEmployee(){
     } else {
         workerNewPersonnel=workerPersonnel;
     }
-    if (groupMovements!="0"){
+    if (groupMovements!="000"){
         groupNewPersonnel=groupMovements;
     } else {
         groupNewPersonnel=groupPersonnel;
     }
-    if (companyMovements!="0"){
+    if (companyMovements!="000"){
         companyNewPersonnel=companyMovements;
     } else {
         companyNewPersonnel=companyPersonnel;
     }
-    if (plantMovements!="0"){
+    if (plantMovements!="000"){
         plantNewPersonnel=plantMovements;
     } else {
         plantNewPersonnel=plantPersonnel;
     }
-    if (departmentMovements!="0"){
+    if (departmentMovements!="000000"){
         departmentNewPersonnel=departmentMovements;
     } else {
         departmentNewPersonnel=departmentPersonnel;
     }
-    if (cveMovements!="0"){
+    if (cveMovements!="O"){
         cveNewPersonnel=cveMovements;
     } else {
         cveNewPersonnel=cvePersonnel;
     }
-    if (nameMovements!="0"){
+    if (nameMovements!=" "){
         nameNewPersonnel=nameMovements;
     } else {
         nameNewPersonnel=namePersonnel;
@@ -370,7 +370,7 @@ void changeEmployee(){
     } else {
         baseSalaryNewPersonnel=baseSalaryPersonnel;
     }
-    if (hireDateMovements!="0"){
+    if (hireDateMovements!=systemDate){
         hireDateNewPersonnel=hireDateMovements;
     } else {
         hireDateNewPersonnel=hireDatePersonnel;
