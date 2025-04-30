@@ -19,8 +19,8 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-ifstream movements("movementsTest1.csv");
-ifstream personnel("personnelTest1.csv");
+ifstream movements("movementsTest4.csv");
+ifstream personnel("personnelTest4.csv");
 ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
@@ -340,38 +340,68 @@ void abort(){
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelMovements(bool &hasMov, bool &hasPers){
     //Same Keys
-    if (workerMovements == workerPersonnel){
-        switch (moveTypeMovements)
-        {
-        //Invalid Register
-        case 'A':
-            //Mark Invalid Register on Report
-            //Call COPY
-            personnelCopy();
-            writeReport << workerMovements << " INVALID REGISTER\n";
-            break;
+    if (hasMov && hasPers){
+        if (workerMovements == workerPersonnel){
+            switch (moveTypeMovements)
+            {
+            //Invalid Register
+            case 'A':
+                //Mark Invalid Register on Report
+                //Call COPY
+                personnelCopy();
+                writeReport << workerMovements << " INVALID REGISTER\n";
+                break;
+            
+            //Valid Delete
+            case 'B':
+                //Mark valid Delete on Report
+                writeReport << workerMovements << " VALID DELETE\n";
+                break;
+            
+            //Valid Change
+            case 'C':
+                //Call Change
+                changeEmployee();
+                writeReport << workerMovements << " VALID CHANGE\n";
+                break;
+            
+            default:
+                cout << "Fail on recognizign movement type" << endl;
+                break;
+            }
+            hasMov  = readMovement();
+            hasPers = readPersonnel();
         
-        //Valid Delete
-        case 'B':
-            //Mark valid Delete on Report
-            writeReport << workerMovements << " VALID DELETE\n";
-            break;
-        
-        //Valid Change
-        case 'C':
-            //Call Change
-            changeEmployee();
-            writeReport << workerMovements << " VALID CHANGE\n";
-            break;
-        
-        default:
-            cout << "Fail on recognizign movement type" << endl;
-            break;
+        } else if (workerMovements < workerPersonnel){ 
+            switch (moveTypeMovements)
+            {
+            //Valid Register
+            case 'A':
+                registerEmployee();
+                writeReport << workerMovements << " VALID REGISTER\n";
+                break;
+            
+            //Invalid Delete
+            case 'B':
+                //Mark Invalid Delete on Report
+                writeReport << workerMovements << " INVALID DELETE\n";
+                break;
+            
+            //Invalid Change
+            case 'C':
+                personnelCopy();
+                //Mark Invalid Change on Report
+                writeReport << workerMovements << " INVALID CHANGE\n";
+                break;
+            
+            default:
+                cout << "Fail on recognizign movement type" << endl;
+                break;
+            
+            }
+            hasMov = readMovement();
         }
-        hasMov  = readMovement();
-        hasPers = readPersonnel();
-    
-    } else if (workerMovements < workerPersonnel){ 
+    } else if (hasMov){
         switch (moveTypeMovements)
         {
         //Valid Register
@@ -400,11 +430,12 @@ void personnelMovements(bool &hasMov, bool &hasPers){
         }
         hasMov = readMovement();
 
-    } else {
-        //Call COPY
+    } else if (hasPers){
         personnelCopy();
         hasPers = readPersonnel();
-    }
+        }
+
+     
 }
 
 /*
@@ -432,10 +463,16 @@ void controlProgram(){
     bool hasPers = readPersonnel();
 
     // 2) Procesa hasta que ambos archivos se acaben
-    while (hasMov && hasPers) {
+    while (hasMov || hasPers) {
         personnelMovements(hasMov, hasPers);
     }
-    
+
+    /*
+    while (hasPers) {
+        personnelCopy();
+        hasPers = readPersonnel();
+    }
+    */
 }
 
 
