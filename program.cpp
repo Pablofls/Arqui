@@ -19,8 +19,8 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-string archMovements = "movementsTest1.csv"; //We declare this 2 string so abort can be used
-string archPersonnel = "personnelTest1.csv";
+string archMovements = "movementsTest4.csv"; //We declare this 2 string so abort can be used
+string archPersonnel = "personnelTest4.csv";
 ifstream movements(archMovements);
 ifstream personnel(archPersonnel);
 ofstream newPersonnel("newpersonnel.csv");
@@ -82,6 +82,7 @@ string hireDateNewPersonnel;
 
 bool existe=false;
 string systemDate="20250310";
+string auxiliar="",auxiliar2="";
 
 /***************** READ ARCHIVES *******************/
 
@@ -326,6 +327,13 @@ void deleteEmployee(){
 
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelMovements(bool &hasMov, bool &hasPers){
+    if(workerMovements==auxiliar&&workerPersonnel==auxiliar2){
+        hasPers= readPersonnel();
+        hasMov= readMovement();
+        return;
+    }
+    auxiliar=workerMovements;
+    auxiliar2=workerPersonnel;
     //Same Keys
     if (hasMov && hasPers){
         if (workerMovements == workerPersonnel){
@@ -420,6 +428,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
         
         }
         hasMov = readMovement();
+        
         return;
 
     } 
