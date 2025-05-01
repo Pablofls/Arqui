@@ -19,14 +19,16 @@
 using namespace std;
 
 //DECLARACION DE ARCHIVOS
-ifstream movements("movementsTest1.csv");
-ifstream personnel("personnelTest1.csv");
+string archMovements = "movementsTest1.csv"; //We declare this 2 string so abort can be used
+string archPersonnel = "personnelTest1.csv";
+ifstream movements(archMovements);
+ifstream personnel(archPersonnel);
 ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
-
 //VERIFICAR ARCHIVOS
 void openFiles(){
+    cout<<"Inicio de Programa"<<endl;
     if (!movements) 
     {
         cerr << "Movements file is not available" << endl;
@@ -79,11 +81,26 @@ int baseSalaryNewPersonnel;
 string hireDateNewPersonnel;
 
 bool existe=false;
-string systemDate="4/29/2025";
+string systemDate="20250310";
 
 /***************** READ ARCHIVES *******************/
+
+void abortProgram(const std::string &current,
+    std::string &previous,
+    const std::string &fileName)
+{
+if (!previous.empty() && previous > current) {
+std::cerr << "ERROR: " << fileName
+      << " desordenado: "
+      << previous << " > " << current << "\n";
+std::abort();  // termina al instante
+}
+previous = current;
+}
+
 //Read Personnel Movement Archive
 bool readMovement(){
+    static std::string previousMov;  
     string linea;
     char delimitador = ',';
 
@@ -111,9 +128,11 @@ bool readMovement(){
         moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
         try {
             baseSalaryMovements = stod(baseSalaryStr);
-        } catch (const std::invalid_argument& e) {
+        } catch (const std::invalid_argument& error) {
             baseSalaryMovements = 0; // Default value if conversion fails
         }
+
+        abortProgram(workerMovements, previousMov, archMovements);
 
         return true;
 
@@ -122,6 +141,7 @@ bool readMovement(){
 
 //Read personal archive
 bool readPersonnel(){
+    static string previousPers;
     string line;
     char delimiter = ',';
     if (!getline(personnel, line)){
@@ -149,6 +169,8 @@ bool readPersonnel(){
 
         getline(stream, hireDatePersonnel, delimiter);
 
+        abortProgram(workerPersonnel, previousPers, archPersonnel);
+
         return true;
     //}
 }
@@ -158,49 +180,49 @@ bool readPersonnel(){
 No es necesario en Alta validar si el trabajador existe. 
 */
 void registerEmployee(){
-    if (workerMovements == ""){
+    if (workerMovements == " "){
         workerNewPersonnel = "";
     } else {
         workerNewPersonnel = workerMovements;
     }
-    if(groupMovements==""){
-        companyNewPersonnel="000";
+    if(groupMovements==" "){
+        groupNewPersonnel="OOO";
     } else{
         groupNewPersonnel=groupMovements;
     }
-    if(companyMovements==""){
-        companyNewPersonnel="000";
+    if(companyMovements==" "){
+        companyNewPersonnel="OOO";
     } else{
         companyNewPersonnel=companyMovements;
     }
-    if(plantMovements==""){
-        plantNewPersonnel="000";
+    if(plantMovements==" "){
+        plantNewPersonnel="OOO";
     } else{
         plantNewPersonnel=plantMovements;
     }
-    if(departmentMovements==""){
-        departmentNewPersonnel="000000";
+    if(departmentMovements==" "){
+        departmentNewPersonnel="OOOOOO";
     } else{
         departmentNewPersonnel=departmentMovements;
     }
-    if(cveMovements==""){
-        cveNewPersonnel="0";
+    if(cveMovements==" "){
+        cveNewPersonnel="O";
     } else{
         cveNewPersonnel=cveMovements;
     }
-    if(nameMovements==""){
-        nameNewPersonnel="0";
+    if(nameMovements==" "){
+        nameNewPersonnel="OOOOOO";
     } else{
         nameNewPersonnel=nameMovements;
     }
     if(baseSalaryMovements==0){
-        baseSalaryMovements=0;
+        baseSalaryMovements=0000000;
     } else{
         baseSalaryNewPersonnel=baseSalaryMovements;
     }
-    if(hireDateMovements==""){
+    if(hireDateMovements=="0"){
         hireDateNewPersonnel=systemDate;
-    } else{ 
+    } else{
         hireDateNewPersonnel=hireDateMovements;
     }
     newPersonnel 
@@ -224,32 +246,32 @@ void changeEmployee(){ //Cambiar a empty
     } else {
         workerNewPersonnel=workerPersonnel;
     }
-    if (groupMovements!="000"){
+    if (groupMovements!=" "){
         groupNewPersonnel=groupMovements;
     } else {
         groupNewPersonnel=groupPersonnel;
     }
-    if (companyMovements!="000"){
+    if (companyMovements!=" "){
         companyNewPersonnel=companyMovements;
     } else {
         companyNewPersonnel=companyPersonnel;
     }
-    if (plantMovements!="000"){
+    if (plantMovements!=" "){
         plantNewPersonnel=plantMovements;
     } else {
         plantNewPersonnel=plantPersonnel;
     }
-    if (departmentMovements!="000000"){
+    if (departmentMovements!=" "){
         departmentNewPersonnel=departmentMovements;
     } else {
         departmentNewPersonnel=departmentPersonnel;
     }
-    if (cveMovements!="O"){
+    if (cveMovements!=" "){
         cveNewPersonnel=cveMovements;
     } else {
         cveNewPersonnel=cvePersonnel;
     }
-    if (nameMovements!=""){
+    if (nameMovements!=" "){
         nameNewPersonnel=nameMovements;
     } else {
         nameNewPersonnel=namePersonnel;
@@ -260,7 +282,7 @@ void changeEmployee(){ //Cambiar a empty
         baseSalaryNewPersonnel=baseSalaryPersonnel;
     }
     if (hireDateMovements!=systemDate){
-        hireDateNewPersonnel=hireDateMovements;
+        hireDateNewPersonnel=systemDate;
     } else {
         hireDateNewPersonnel=hireDatePersonnel;
     }
@@ -302,41 +324,6 @@ void deleteEmployee(){
 }
 
 
-/***************** ABORT *******************/
-
-
-/*
-La acción de abortar por archivos desordenados, se debe
-realizar en el módulo que lee y sugiero que se detecte al 
-momento de que el trabajador leído sea menor al anterior.
-*/
-//Aborts porgram (ETHAN)
-void abort(){
-    string previousWorker = "";
-
-    //Checks Movements Archive
-    while (movements >> moveTypeMovements >> workerMovements >> groupMovements >> companyMovements >> plantMovements >> departmentMovements >> cveMovements >> nameMovements >> baseSalaryMovements >> hireDateMovements){
-        if (!previousWorker.empty() && previousWorker > workerMovements) {
-            cerr << "ERROR: El archivo 'movements.txt' no está ordenado.\n";
-            exit(EXIT_FAILURE);
-        }
-        previousWorker = workerMovements;
-
-    }
-
-    previousWorker = "";
-
-    //Checks Personnel Archive
-    while (personnel >> workerPersonnel >> groupPersonnel >> companyPersonnel >> plantPersonnel >> departmentPersonnel >> cvePersonnel >> namePersonnel >> baseSalaryPersonnel >> hireDatePersonnel) {
-        if (!previousWorker.empty() && previousWorker > workerPersonnel) {
-            cerr << "ERROR: El archivo 'personnel.csv' no está ordenado.\n";
-            exit(EXIT_FAILURE);
-        }
-        previousWorker = workerPersonnel;
-    }
-}
-
-
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelMovements(bool &hasMov, bool &hasPers){
     //Same Keys
@@ -371,8 +358,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
             }
             hasMov  = readMovement();
             hasPers = readPersonnel();
-        
-        } else if (workerMovements < workerPersonnel){ 
+        } else if (workerMovements < workerPersonnel){
             switch (moveTypeMovements)
             {
             //Valid Register
@@ -400,7 +386,6 @@ void personnelMovements(bool &hasMov, bool &hasPers){
             
             }
             hasMov = readMovement();
-            
         } else {
             personnelCopy();
             hasPers = readPersonnel();
@@ -442,7 +427,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
         personnelCopy();
         hasPers = readPersonnel();
         return;
-        } 
+    }   
 }
 
 /*
@@ -460,6 +445,7 @@ void closeFiles(){
     movements.close();
     personnel.close();
     newPersonnel.close();
+    cout<<"Final de Programa"<<endl;
 }
 
 
