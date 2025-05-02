@@ -84,20 +84,20 @@ string auxiliar="",auxiliar2="";
 /***************** READ ARCHIVES *******************/
 
 void abortProgram(const std::string &current,
-    std::string &previous,
-    const std::string &fileName){
-if (!previous.empty() && previous > current){
-std::cerr << "ERROR: " << fileName
-      << " desordenado: "
-      << previous << " > " << current << "\n";
-std::abort();  // termina al instante
-}
+    string &previous,
+    const string &fileName){
+    if (!previous.empty() && previous > current){
+        cerr << "ERROR: " << fileName
+            << " disordered: "
+            << previous << " > " << current << "\n";
+        abort();  // ends instantly
+    }
 previous = current;
 }
 
 // Read Personnel Movement Archive
 bool readMovement(){
-    static std::string previousMov;  
+    static string previousMov;  
     string linea;
     char delimitador = ',';
 
@@ -145,31 +145,29 @@ bool readPersonnel(){
         return false;
     }
 
-    //if (getline(personnel, line)){
-        stringstream stream(line);
+    stringstream stream(line);
 
-        getline(stream, workerPersonnel, delimiter);
-        getline(stream, groupPersonnel, delimiter);
-        getline(stream, companyPersonnel, delimiter);
-        getline(stream, plantPersonnel, delimiter);
-        getline(stream, departmentPersonnel, delimiter);
-        getline(stream, cvePersonnel, delimiter);
-        getline(stream, namePersonnel, delimiter);
+    getline(stream, workerPersonnel, delimiter);
+    getline(stream, groupPersonnel, delimiter);
+    getline(stream, companyPersonnel, delimiter);
+    getline(stream, plantPersonnel, delimiter);
+    getline(stream, departmentPersonnel, delimiter);
+    getline(stream, cvePersonnel, delimiter);
+    getline(stream, namePersonnel, delimiter);
 
-        string baseSalaryStr;
-        getline(stream, baseSalaryStr, delimiter);
-        try {
-            baseSalaryPersonnel = stoi(baseSalaryStr);
-        } catch (const std::invalid_argument&) {
-            baseSalaryPersonnel = 0; // Default value if conversion fails
-        }
+    string baseSalaryStr;
+    getline(stream, baseSalaryStr, delimiter);
+    try {
+        baseSalaryPersonnel = stoi(baseSalaryStr);
+    } catch (const invalid_argument&) {
+        baseSalaryPersonnel = 0; // Default value if conversion fails
+    }
 
-        getline(stream, hireDatePersonnel, delimiter);
+    getline(stream, hireDatePersonnel, delimiter);
 
-        abortProgram(workerPersonnel, previousPers, archPersonnel);
+    abortProgram(workerPersonnel, previousPers, archPersonnel);
 
-        return true;
-    //}
+    return true;
 }
 
 /***************** REGISTER *******************/
