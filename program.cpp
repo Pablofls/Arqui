@@ -425,7 +425,6 @@ void closeFiles(){
     cout<<"End of Program"<<endl;
 }
 
-
 /***************** CONTROL PROGRAM *******************/
 
 void controlProgram(){
@@ -437,8 +436,6 @@ void controlProgram(){
         personnelMovements(hasMov, hasPers);
     }
 }
-
-
 
 /***************** MAIN PROGRAM *******************/
 
