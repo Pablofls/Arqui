@@ -19,8 +19,8 @@
 using namespace std;
 
 // FILE DECLARATION
-string archMovements = "movementsTest4.csv"; // We declare this 2 string so abort can be used
-string archPersonnel = "personnelTest4.csv";
+string archMovements = "movements.csv"; // We declare this 2 string so abort can be used
+string archPersonnel = "personnel.csv";
 ifstream movements(archMovements);
 ifstream personnel(archPersonnel);
 ofstream newPersonnel("newpersonnel.csv");
@@ -179,22 +179,22 @@ void registerEmployee(){
         workerNewPersonnel = workerMovements;
     }
     if(groupMovements==" "){
-        groupNewPersonnel="OOO";
+        groupNewPersonnel="000";
     } else{
         groupNewPersonnel=groupMovements;
     }
     if(companyMovements==" "){
-        companyNewPersonnel="OOO";
+        companyNewPersonnel="000";
     } else{
         companyNewPersonnel=companyMovements;
     }
     if(plantMovements==" "){
-        plantNewPersonnel="OOO";
+        plantNewPersonnel="000";
     } else{
         plantNewPersonnel=plantMovements;
     }
     if(departmentMovements==" "){
-        departmentNewPersonnel="OOOOOO";
+        departmentNewPersonnel="000000";
     } else{
         departmentNewPersonnel=departmentMovements;
     }
@@ -204,7 +204,7 @@ void registerEmployee(){
         cveNewPersonnel=cveMovements;
     }
     if(nameMovements==" "){
-        nameNewPersonnel="OOOOOO";
+        nameNewPersonnel="         ";
     } else{
         nameNewPersonnel=nameMovements;
     }
