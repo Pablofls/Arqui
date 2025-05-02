@@ -204,7 +204,7 @@ void registerEmployee(){
         cveNewPersonnel=cveMovements;
     }
     if(nameMovements==" "){
-        nameNewPersonnel="         ";
+        nameNewPersonnel="        ";
     } else{
         nameNewPersonnel=nameMovements;
     }
