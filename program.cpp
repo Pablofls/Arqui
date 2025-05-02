@@ -1,10 +1,10 @@
 /*
 #Program: Personnel Management
-#Objective: Modify personnel...
+#Objective: Create a new modified personnel file using a personnel file of workers who will receive modifications from a file of movements of additions, terminations and changes.
 #Author: Pablo Flores Rodriguez
 #Author: Ethan Rivera Saldivar
-#Author:Christopher Reeker Cireno
-#Author:Arturo Vargas Espinosa
+#Author: Christopher Reeker Cireno
+#Author: Arturo Vargas Espinosa
 #Date: April 25th, 2025
 #Class: Arquitectura de software.
 #Honor pledge: We hereby affirm that we have done this activity with academic integrity.
@@ -18,35 +18,32 @@
 #include <sstream>
 using namespace std;
 
-//DECLARACION DE ARCHIVOS
-string archMovements = "movementsTest4.csv"; //We declare this 2 string so abort can be used
+// FILE DECLARATION
+string archMovements = "movementsTest4.csv"; // We declare this 2 string so abort can be used
 string archPersonnel = "personnelTest4.csv";
 ifstream movements(archMovements);
 ifstream personnel(archPersonnel);
 ofstream newPersonnel("newpersonnel.csv");
 ofstream writeReport("writeReport.txt");
 
-//VERIFICAR ARCHIVOS
+// VERIFY FILES
 void openFiles(){
-    cout<<"Inicio de Programa"<<endl;
-    if (!movements) 
-    {
+    cout<<"Program Start"<<endl;
+    if (!movements){
         cerr << "Movements file is not available" << endl;
         exit (EXIT_FAILURE);
     }
-    if (!personnel) 
-    {
+    if (!personnel){
         cerr << "Personnel file is not available" << endl;
         exit (EXIT_FAILURE);
     }
-    if (!newPersonnel) 
-    {
+    if (!newPersonnel){
         cerr << "New Personnel file us not available" << endl;
         exit (EXIT_FAILURE);
     }
 }
 /***************** GLOBAL VARIABLES *******************/
-//Variables for Movement Archive
+// Variables for Movement Archive
 char moveTypeMovements;
 string workerMovements;
 string groupMovements;
@@ -58,7 +55,7 @@ string nameMovements;
 int baseSalaryMovements;
 string hireDateMovements;
 
-//Variables for Personnel Archive
+// Variables for Personnel Archive
 string workerPersonnel;
 string groupPersonnel;
 string companyPersonnel;
@@ -69,7 +66,7 @@ string namePersonnel;
 int baseSalaryPersonnel;
 string hireDatePersonnel;
 
-//Variables for New Personnel Archive
+// Variables for New Personnel Archive
 string workerNewPersonnel;
 string groupNewPersonnel;
 string companyNewPersonnel;
@@ -88,9 +85,8 @@ string auxiliar="",auxiliar2="";
 
 void abortProgram(const std::string &current,
     std::string &previous,
-    const std::string &fileName)
-{
-if (!previous.empty() && previous > current) {
+    const std::string &fileName){
+if (!previous.empty() && previous > current){
 std::cerr << "ERROR: " << fileName
       << " desordenado: "
       << previous << " > " << current << "\n";
@@ -99,17 +95,17 @@ std::abort();  // termina al instante
 previous = current;
 }
 
-//Read Personnel Movement Archive
+// Read Personnel Movement Archive
 bool readMovement(){
     static std::string previousMov;  
     string linea;
     char delimitador = ',';
 
-    if (!getline(movements, linea)) {
+    if (!getline(movements, linea)){
         return false;
     }
 
-    //if (getline(movements, linea)) {
+    //if (getline(movements, linea)){
         stringstream stream(linea);
 
         string moveTypeStr, baseSalaryStr;
@@ -125,7 +121,7 @@ bool readMovement(){
         getline(stream, baseSalaryStr, delimitador);
         getline(stream, hireDateMovements, delimitador);
 
-        // Conversión de tipo
+        // Type conversion
         moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
         try {
             baseSalaryMovements = stod(baseSalaryStr);
@@ -140,7 +136,7 @@ bool readMovement(){
     //}
 }
 
-//Read personal archive
+// Read personal archive
 bool readPersonnel(){
     static string previousPers;
     string line;
@@ -149,7 +145,7 @@ bool readPersonnel(){
         return false;
     }
 
-    //if (getline(personnel, line)) {
+    //if (getline(personnel, line)){
         stringstream stream(line);
 
         getline(stream, workerPersonnel, delimiter);
@@ -177,9 +173,7 @@ bool readPersonnel(){
 }
 
 /***************** REGISTER *******************/
-/*
-No es necesario en Alta validar si el trabajador existe. 
-*/
+
 void registerEmployee(){
     if (workerMovements == " "){
         workerNewPersonnel = "";
@@ -238,10 +232,9 @@ void registerEmployee(){
     << hireDateNewPersonnel << "\n";
 }
 
-
 /***************** CHANGE *******************/
 
-void changeEmployee(){ //Cambiar a empty
+void changeEmployee(){
     if (workerMovements!="0"){
         workerNewPersonnel=workerMovements;
     } else {
@@ -301,6 +294,7 @@ void changeEmployee(){ //Cambiar a empty
 }
 
 /***************** COPY *******************/
+
 void personnelCopy(){
     newPersonnel
         << workerPersonnel << ", "
@@ -315,15 +309,7 @@ void personnelCopy(){
         << "\n";
 }
 
-/***************** DELETE *******************/
-
-/*
-Baja no se realiza ninguna acción
-*/
-void deleteEmployee(){
-
-}
-
+// Delete does no action
 
 /***************** PERSONNEL MOVEMENTS *******************/
 void personnelMovements(bool &hasMov, bool &hasPers){
@@ -334,63 +320,59 @@ void personnelMovements(bool &hasMov, bool &hasPers){
     }
     auxiliar=workerMovements;
     auxiliar2=workerPersonnel;
-    //Same Keys
+    // Same Keys
     if (hasMov && hasPers){
         if (workerMovements == workerPersonnel){
-            switch (moveTypeMovements)
-            {
-            //Invalid Register
-            case 'A':
-                //Mark Invalid Register on Report
-                //Call COPY
-                personnelCopy();
-                writeReport << workerMovements << " INVALID REGISTER\n";
-                break;
+            switch (moveTypeMovements){
+                // Invalid Register
+                case 'A':
+                    // Mark Invalid Register on Report
+                    personnelCopy();
+                    writeReport << workerMovements << " INVALID REGISTER\n";
+                    break;
             
-            //Valid Delete
-            case 'B':
-                //Mark valid Delete on Report
-                writeReport << workerMovements << " VALID DELETE\n";
-                break;
+                // Valid Delete
+                case 'B':
+                    // Mark valid Delete on Report
+                    writeReport << workerMovements << " VALID DELETE\n";
+                    break;
             
-            //Valid Change
-            case 'C':
-                //Call Change
-                changeEmployee();
-                writeReport << workerMovements << " VALID CHANGE\n";
-                break;
+                // Valid Change
+                case 'C':
+                    changeEmployee();
+                    writeReport << workerMovements << " VALID CHANGE\n";
+                    break;
             
-            default:
-                cout << "Fail on recognizign movement type" << endl;
-                break;
+                default:
+                    cout << "Fail on recognizign movement type" << endl;
+                    break;
             }
             hasMov  = readMovement();
             hasPers = readPersonnel();
         } else if (workerMovements < workerPersonnel){
-            switch (moveTypeMovements)
-            {
-            //Valid Register
-            case 'A':
-                registerEmployee();
-                writeReport << workerMovements << " VALID REGISTER\n";
-                break;
+            switch (moveTypeMovements){
+                // Valid Register
+                case 'A':
+                    registerEmployee();
+                    writeReport << workerMovements << " VALID REGISTER\n";
+                    break;
             
-            //Invalid Delete
-            case 'B':
-                //Mark Invalid Delete on Report
-                writeReport << workerMovements << " INVALID DELETE\n";
-                break;
+                //Invalid Delete
+                case 'B':
+                    // Mark Invalid Delete on Report
+                    writeReport << workerMovements << " INVALID DELETE\n";
+                    break;
             
-            //Invalid Change
-            case 'C':
-                personnelCopy();
-                //Mark Invalid Change on Report
-                writeReport << workerMovements << " INVALID CHANGE\n";
-                break;
+                //Invalid Change
+                case 'C':
+                    // Mark Invalid Change on Report
+                    personnelCopy();
+                    writeReport << workerMovements << " INVALID CHANGE\n";
+                    break;
             
-            default:
-                cout << "Fail on recognizign movement type" << endl;
-                break;
+                default:
+                    cout << "Fail on recognizign movement type" << endl;
+                    break;
             
             }
             hasMov = readMovement();
@@ -401,36 +383,33 @@ void personnelMovements(bool &hasMov, bool &hasPers){
         return;
     }
     if (hasMov){
-        switch (moveTypeMovements)
-        {
-        //Valid Register
-        case 'A':
-            registerEmployee();
-            writeReport << workerMovements << " VALID REGISTER\n";
-            break;
+        switch (moveTypeMovements){
+            // Valid Register
+            case 'A':
+                registerEmployee();
+                writeReport << workerMovements << " VALID REGISTER\n";
+                break;
         
-        //Invalid Delete
-        case 'B':
-            //Mark Invalid Delete on Report
-            writeReport << workerMovements << " INVALID DELETE\n";
-            break;
+            // Invalid Delete
+            case 'B':
+                // Mark Invalid Delete on Report
+                writeReport << workerMovements << " INVALID DELETE\n";
+                break;
         
-        //Invalid Change
-        case 'C':
-            personnelCopy();
-            //Mark Invalid Change on Report
-            writeReport << workerMovements << " INVALID CHANGE\n";
-            break;
+            // Invalid Change
+            case 'C':
+                // Mark Invalid Change on Report
+                // personnelCopy();
+                writeReport << workerMovements << " INVALID CHANGE\n";
+                break;
         
-        default:
-            cout << "Fail on recognizign movement type" << endl;
-            break;
+            default:
+                cout << "Fail on recognizign movement type" << endl;
+                break;
         
         }
         hasMov = readMovement();
-        
         return;
-
     } 
     if (hasPers){
         personnelCopy();
@@ -439,22 +418,13 @@ void personnelMovements(bool &hasMov, bool &hasPers){
     }   
 }
 
-/*
-Mejorar el diseño en módulos Copia, Alta, Baja y Cambio. Por 
-ejemplo para Alta bastaría indicando solamente: "Generar registro en 
-NP con la información de Mov y valores defaults"
-*/
-
-
 /***************** CLOSE ARCHIVES *******************/
 
-
-//CERRAR ARCVHIVOS
 void closeFiles(){
     movements.close();
     personnel.close();
     newPersonnel.close();
-    cout<<"Final de Programa"<<endl;
+    cout<<"End of Program"<<endl;
 }
 
 
@@ -464,17 +434,15 @@ void controlProgram(){
     bool hasMov  = readMovement();
     bool hasPers = readPersonnel();
 
-    //Procesa hasta que ambos archivos se acaben
-    while (hasMov || hasPers) {
+    // Process until both files are finished
+    while (hasMov || hasPers){
         personnelMovements(hasMov, hasPers);
     }
-
 }
 
 
 
 /***************** MAIN PROGRAM *******************/
-
 
 int main(){
     openFiles();
