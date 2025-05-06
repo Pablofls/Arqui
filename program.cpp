@@ -14,6 +14,7 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
 #include <iomanip>
 #include <sstream>
 using namespace std;
@@ -213,7 +214,7 @@ void registerEmployee(){
     }
     if(baseSalaryMovements==0){
         baseSalaryMovements=0000000;
-        //baseSalaryNewPersonnel=0;
+        // baseSalaryNewPersonnel=0;
     } else{
         baseSalaryNewPersonnel=baseSalaryMovements;
     }
@@ -450,8 +451,8 @@ void closeFiles(){
 
 // Write in the report the headings
 void writeRep(){
-    writeReport    
-        <<"                          UPDATING THE PERSONNEL FILE                   SHEET  "<<numSheet+1<<"\n\n"
+    writeReport
+        <<"NOP120                    UPDATING THE PERSONNEL FILE                   SHEET  "<<numSheet+1<<"\n\n"
         <<"ACME - BANKING DIV.             MOVEMENTS MADE                                 \n"
         <<"PERSONNEL                                                                      \n\n"
         <<"          WORKER         MOVEMENT MADE                                        \n"
