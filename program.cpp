@@ -460,7 +460,6 @@ void closeFiles(){
 // Write in the report the headings
 void writeRep(){
     writeReport
-        <<"12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012\n"
         <<"NOP120                          UPDATING THE PERSONNEL FILE                         SHEET "<<numSheet+1<<"\n\n"
         <<"ACME - BANKING DIV.                   MOVEMENTS MADE                                   \n"
         <<"PERSONNEL                                                                      \n\n"
