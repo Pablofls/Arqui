@@ -83,9 +83,9 @@ int hireDateNewPersonnel;
 
 bool existe=false;
 int systemDate = []() {
-    auto now = std::chrono::system_clock::now();
-    auto in_time_t = std::chrono::system_clock::to_time_t(now);
-    std::tm tm = *std::localtime(&in_time_t);
+    auto now = chrono::system_clock::now();
+    auto in_time_t = chrono::system_clock::to_time_t(now);
+    tm tm = *localtime(&in_time_t);
     return (tm.tm_year + 1900) * 10000 + (tm.tm_mon + 1) * 100 + tm.tm_mday;
 }();
 string auxiliar = "", auxiliar2 = "";
@@ -94,7 +94,7 @@ string spaceWorkerReport="         ";
 
 /***************** ABORT PROGRAM *******************/
 
-void abortProgram(const std::string &current,
+void abortProgram(const string &current,
     string &previous,
     const string &fileName){
     if (!previous.empty() && previous > current){
@@ -136,13 +136,13 @@ bool readMovement(){
     moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
     try {
         baseSalaryMovements = stod(baseSalaryStr);
-    } catch (const std::invalid_argument& error) {
+    } catch (const invalid_argument& error) {
         baseSalaryMovements = 0; // Default value if conversion fails
     }
 
     try{
         hireDateMovements=stoi(hireDateMovementsStr);
-    } catch (const std::invalid_argument& error){
+    } catch (const invalid_argument& error){
         hireDateMovements=0;
     }
 
@@ -244,7 +244,7 @@ void registerEmployee(){
         << departmentNewPersonnel << ", "
         << cveNewPersonnel    << ", "
         << nameNewPersonnel   << ", "
-        << std::fixed << std::setprecision(2) << baseSalaryNewPersonnel << ", "
+        << fixed << setprecision(2) << baseSalaryNewPersonnel << ", "
         << hireDateNewPersonnel << "\n";
 }
 
@@ -320,7 +320,7 @@ void personnelCopy(){
         << departmentPersonnel << ", "
         << cvePersonnel    << ", "
         << namePersonnel   << ", "
-        << std::fixed << std::setprecision(2) << baseSalaryPersonnel <<", "
+        << fixed << setprecision(2) << baseSalaryPersonnel <<", "
         << hireDatePersonnel << "\n";
 }
 
