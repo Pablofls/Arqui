@@ -1,0 +1,15 @@
+12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012
+NOP120                          UPDATING THE PERSONNEL FILE                         SHEET 1
+
+ACME - BANKING DIV.                   MOVEMENTS MADE                                   
+PERSONNEL                                                                      
+
+          WORKER                MOVEMENT MADE                                 
+         --------       ------------------------------                        
+         T1111T         V A L I D      R E G I S T E R
+         T2222T         V A L I D      R E G I S T E R
+         T3333T         I N V A L I D  R E G I S T E R
+         T4444T         V A L I D      D E L E T E
+         T5555T         I N V A L I D  D E L E T E
+         T6666T         V A L I D      C H A N G E
+         T7777T         I N V A L I D  C H A N G E

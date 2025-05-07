@@ -55,8 +55,8 @@ string plantMovements;
 string departmentMovements;
 string cveMovements;
 string nameMovements;
-int baseSalaryMovements;
-string hireDateMovements;
+double baseSalaryMovements;
+int hireDateMovements;
 
 // Variables for Personnel Archive
 string workerPersonnel;
@@ -66,8 +66,8 @@ string plantPersonnel;
 string departmentPersonnel;
 string cvePersonnel;
 string namePersonnel;
-int baseSalaryPersonnel;
-string hireDatePersonnel;
+double baseSalaryPersonnel;
+int hireDatePersonnel;
 
 // Variables for New Personnel Archive
 string workerNewPersonnel;
@@ -77,14 +77,14 @@ string plantNewPersonnel;
 string departmentNewPersonnel;
 string cveNewPersonnel;
 string nameNewPersonnel;
-int baseSalaryNewPersonnel;
-string hireDateNewPersonnel;
+double baseSalaryNewPersonnel;
+int hireDateNewPersonnel;
 
 bool existe=false;
-string systemDate="20250310";
+int systemDate=20250310;
 string auxiliar="",auxiliar2="";
 int numSheet=0;
-string spaceWorkerReport="          ";
+string spaceWorkerReport="         ";
 
 /***************** ABORT PROGRAM *******************/
 
@@ -113,7 +113,7 @@ bool readMovement(){
 
     stringstream stream(linea);
 
-    string moveTypeStr, baseSalaryStr;
+    string moveTypeStr, baseSalaryStr,hireDateMovementsStr;
 
     getline(stream, moveTypeStr, delimitador);
     getline(stream, workerMovements, delimitador);
@@ -124,7 +124,7 @@ bool readMovement(){
     getline(stream, cveMovements, delimitador);
     getline(stream, nameMovements, delimitador);
     getline(stream, baseSalaryStr, delimitador);
-    getline(stream, hireDateMovements, delimitador);
+    getline(stream, hireDateMovementsStr, delimitador);
 
     // Type conversion
     moveTypeMovements = moveTypeStr.empty() ? ' ' : moveTypeStr[0];
@@ -132,6 +132,12 @@ bool readMovement(){
         baseSalaryMovements = stod(baseSalaryStr);
     } catch (const std::invalid_argument& error) {
         baseSalaryMovements = 0; // Default value if conversion fails
+    }
+
+    try{
+        hireDateMovements=stoi(hireDateMovementsStr);
+    } catch (const std::invalid_argument& error){
+        hireDateMovements=0;
     }
 
     abortProgram(workerMovements, previousMov, archMovements);
@@ -143,14 +149,13 @@ bool readMovement(){
 
 bool readPersonnel(){
     static string previousPers;
-    string line;
+    string line, baseSalaryStr, hireDatePersonnelStr;
     char delimiter = ',';
     if (!getline(personnel, line)){
         return false;
     }
 
     stringstream stream(line);
-
     getline(stream, workerPersonnel, delimiter);
     getline(stream, groupPersonnel, delimiter);
     getline(stream, companyPersonnel, delimiter);
@@ -158,17 +163,20 @@ bool readPersonnel(){
     getline(stream, departmentPersonnel, delimiter);
     getline(stream, cvePersonnel, delimiter);
     getline(stream, namePersonnel, delimiter);
-
-    string baseSalaryStr;
     getline(stream, baseSalaryStr, delimiter);
+    getline(stream, hireDatePersonnelStr, delimiter);
+
     try {
-        baseSalaryPersonnel = stoi(baseSalaryStr);
+        baseSalaryPersonnel = stod(baseSalaryStr);
     } catch (const invalid_argument&) {
         baseSalaryPersonnel = 0; // Default value if conversion fails
     }
-
-    getline(stream, hireDatePersonnel, delimiter);
-
+    try {
+        hireDatePersonnel = stoi(hireDatePersonnelStr);
+    } catch (const invalid_argument&) {
+        baseSalaryPersonnel = 0; // Default value if conversion fails
+    }
+    
     abortProgram(workerPersonnel, previousPers, archPersonnel);
 
     return true;
@@ -198,7 +206,7 @@ void registerEmployee(){
         plantNewPersonnel=plantMovements;
     }
     if(departmentMovements==" "){
-        departmentNewPersonnel="000000";
+        departmentNewPersonnel="00000";
     } else{
         departmentNewPersonnel=departmentMovements;
     }
@@ -208,17 +216,16 @@ void registerEmployee(){
         cveNewPersonnel=cveMovements;
     }
     if(nameMovements==" "){
-        nameNewPersonnel="        ";
+        nameNewPersonnel="       ";
     } else{
         nameNewPersonnel=nameMovements;
     }
     if(baseSalaryMovements==0){
-        baseSalaryMovements=0000000;
-        // baseSalaryNewPersonnel=0;
+        baseSalaryNewPersonnel=0.0;
     } else{
         baseSalaryNewPersonnel=baseSalaryMovements;
     }
-    if(hireDateMovements=="0"){
+    if(hireDateMovements==0){
         hireDateNewPersonnel=systemDate;
     } else{
         hireDateNewPersonnel=hireDateMovements;
@@ -231,7 +238,7 @@ void registerEmployee(){
         << departmentNewPersonnel << ", "
         << cveNewPersonnel    << ", "
         << nameNewPersonnel   << ", "
-        << baseSalaryNewPersonnel << ", "
+        << std::fixed << std::setprecision(2) << baseSalaryNewPersonnel << ", "
         << hireDateNewPersonnel << "\n";
 }
 
@@ -278,7 +285,8 @@ void changeEmployee(){
     } else {
         baseSalaryNewPersonnel=baseSalaryPersonnel;
     }
-    if (hireDateMovements!=systemDate){
+    
+    if (hireDateMovements!=0){
         hireDateNewPersonnel=systemDate;
     } else {
         hireDateNewPersonnel=hireDatePersonnel;
@@ -306,7 +314,7 @@ void personnelCopy(){
         << departmentPersonnel << ", "
         << cvePersonnel    << ", "
         << namePersonnel   << ", "
-        << baseSalaryPersonnel << ", "
+        << std::fixed << std::setprecision(2) << baseSalaryPersonnel <<", "
         << hireDatePersonnel << "\n";
 }
 
@@ -332,7 +340,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     personnelCopy();
                     writeReport 
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"INVALID REGISTER\n";
+                        <<spaceWorkerReport<<"I N V A L I D  R E G I S T E R\n";
                     break;
             
                 // Valid Delete
@@ -340,7 +348,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     // Mark valid Delete on Report
                     writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"VALID DELETE\n";
+                        <<spaceWorkerReport<<"V A L I D      D E L E T E\n";
                     break;
             
                 // Valid Change
@@ -348,7 +356,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     changeEmployee();
                     writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"VALID CHANGE\n";
+                        <<spaceWorkerReport<<"V A L I D      C H A N G E\n";
                     break;
             
                 default:
@@ -364,7 +372,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     registerEmployee();
                     writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"VALID REGISTER\n";
+                        <<spaceWorkerReport<<"V A L I D      R E G I S T E R\n";
                     break;
             
                 //Invalid Delete
@@ -372,7 +380,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     // Mark Invalid Delete on Report
                     writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"INVALID DELETE\n";
+                        <<spaceWorkerReport<<"I N V A L I D  D E L E T E\n";
                     break;
             
                 //Invalid Change
@@ -381,7 +389,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                     personnelCopy();
                     writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"INVALID CHANGE\n";
+                        <<spaceWorkerReport<<"I N V A L I D  C H A N G E\n";
                     break;
             
                 default:
@@ -403,7 +411,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                 registerEmployee();
                 writeReport
                     <<spaceWorkerReport<<workerMovements
-                    <<spaceWorkerReport<<"VALID REGISTER\n";
+                    <<spaceWorkerReport<<"V A L I D      R E G I S T E R\n";
                 break;
         
             // Invalid Delete
@@ -411,7 +419,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                 // Mark Invalid Delete on Report
                 writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"INVALID DELETE\n";
+                        <<spaceWorkerReport<<"I N V A L I D  D E L E T E\n";
                 break;
         
             // Invalid Change
@@ -420,7 +428,7 @@ void personnelMovements(bool &hasMov, bool &hasPers){
                 // personnelCopy();
                 writeReport
                         <<spaceWorkerReport<<workerMovements
-                        <<spaceWorkerReport<<"INVALID CHANGE\n";
+                        <<spaceWorkerReport<<"I N V A L I D  C H A N G E\n";
                 break;
         
             default:
@@ -452,11 +460,12 @@ void closeFiles(){
 // Write in the report the headings
 void writeRep(){
     writeReport
-        <<"NOP120                    UPDATING THE PERSONNEL FILE                   SHEET  "<<numSheet+1<<"\n\n"
-        <<"ACME - BANKING DIV.             MOVEMENTS MADE                                 \n"
+        <<"12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012\n"
+        <<"NOP120                          UPDATING THE PERSONNEL FILE                         SHEET "<<numSheet+1<<"\n\n"
+        <<"ACME - BANKING DIV.                   MOVEMENTS MADE                                   \n"
         <<"PERSONNEL                                                                      \n\n"
-        <<"          WORKER         MOVEMENT MADE                                        \n"
-        <<"         --------       ---------------                                       \n";
+        <<"          WORKER                MOVEMENT MADE                                 \n"
+        <<"         --------       ------------------------------                        \n";
 }
 
 /***************** CONTROL PROGRAM *******************/
