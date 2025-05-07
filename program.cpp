@@ -17,11 +17,12 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <chrono>
 using namespace std;
 
 // FILE DECLARATION
-string archMovements = "movements.csv"; // We declare this 2 string so abort can be used
-string archPersonnel = "personnel.csv";
+string archMovements = "movements.csv"; // Here we declare the movement File to check
+string archPersonnel = "personnel.csv"; // Here we declare the personnel File to check
 ifstream movements(archMovements);
 ifstream personnel(archPersonnel);
 ofstream newPersonnel("newpersonnel.csv");
@@ -81,8 +82,13 @@ double baseSalaryNewPersonnel;
 int hireDateNewPersonnel;
 
 bool existe=false;
-int systemDate=20250310;
-string auxiliar="",auxiliar2="";
+int systemDate = []() {
+    auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm = *std::localtime(&in_time_t);
+    return (tm.tm_year + 1900) * 10000 + (tm.tm_mon + 1) * 100 + tm.tm_mday;
+}();
+string auxiliar = "", auxiliar2 = "";
 int numSheet=0;
 string spaceWorkerReport="         ";
 
