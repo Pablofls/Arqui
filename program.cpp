@@ -212,7 +212,7 @@ void registerEmployee(){
         plantNewPersonnel=plantMovements;
     }
     if(departmentMovements==" "){
-        departmentNewPersonnel="00000";
+        departmentNewPersonnel="000000";
     } else{
         departmentNewPersonnel=departmentMovements;
     }
@@ -222,7 +222,7 @@ void registerEmployee(){
         cveNewPersonnel=cveMovements;
     }
     if(nameMovements==" "){
-        nameNewPersonnel="         ";
+        nameNewPersonnel="        ";
     } else{
         nameNewPersonnel=nameMovements;
     }
