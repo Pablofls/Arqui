@@ -140,7 +140,7 @@ bool readMovement(){
         baseSalaryMovements = 0; // Default value if conversion fails
     }
 
-    try{
+    try {
         hireDateMovements=stoi(hireDateMovementsStr);
     } catch (const invalid_argument& error){
         hireDateMovements=0;
@@ -196,44 +196,44 @@ void registerEmployee(){
     } else {
         workerNewPersonnel = workerMovements;
     }
-    if(groupMovements==" "){
+    if (groupMovements==" "){
         groupNewPersonnel="000";
-    } else{
+    } else {
         groupNewPersonnel=groupMovements;
     }
-    if(companyMovements==" "){
+    if (companyMovements==" "){
         companyNewPersonnel="000";
-    } else{
+    } else {
         companyNewPersonnel=companyMovements;
     }
-    if(plantMovements==" "){
+    if (plantMovements==" "){
         plantNewPersonnel="000";
-    } else{
+    } else {
         plantNewPersonnel=plantMovements;
     }
-    if(departmentMovements==" "){
+    if (departmentMovements==" "){
         departmentNewPersonnel="000000";
-    } else{
+    } else {
         departmentNewPersonnel=departmentMovements;
     }
-    if(cveMovements==" "){
+    if (cveMovements==" "){
         cveNewPersonnel="O";
-    } else{
+    } else {
         cveNewPersonnel=cveMovements;
     }
-    if(nameMovements==" "){
+    if (nameMovements==" "){
         nameNewPersonnel="        ";
-    } else{
+    } else {
         nameNewPersonnel=nameMovements;
     }
-    if(baseSalaryMovements==0){
+    if (baseSalaryMovements==0){
         baseSalaryNewPersonnel=0.0;
-    } else{
+    } else {
         baseSalaryNewPersonnel=baseSalaryMovements;
     }
-    if(hireDateMovements==0){
+    if (hireDateMovements==0){
         hireDateNewPersonnel=systemDate;
-    } else{
+    } else {
         hireDateNewPersonnel=hireDateMovements;
     }
     newPersonnel 
